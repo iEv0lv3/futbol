@@ -103,7 +103,33 @@ class StatTrackerTest < Minitest::Test
     assert_equal 32, @new_tracker.count_of_teams
   end
 
+  def test_best_offense
+    assert_instance_of String, @new_tracker.best_offense
+    assert_equal "NE", @new_tracker.best_offense
+  end
+
+  def test_worst_offense
+    assert_instance_of String, @new_tracker.worst_offense
+    assert_equal "ORL", @new_tracker.worst_offense
+  end
+
+  def test_best_defense
+    assert_instance_of String, @new_tracker.best_defense
+    assert_equal "SKC", @new_tracker.best_defense
+  end
+
+  def test_worst_defense
+    assert_instance_of String, @new_tracker.worst_defense
+    assert_equal "NE", @new_tracker.worst_defense
+  end
+
   def test_highest_scoring_visitor
+    assert_instance_of String, @new_tracker.highest_scoring_visitor
     assert_equal "RSL", @new_tracker.highest_scoring_visitor
+  end
+
+  def test_highest_scoring_home_team
+    assert_instance_of String, @new_tracker.highest_scoring_home_team
+    assert_equal "NE", @new_tracker.highest_scoring_home_team
   end
 end
