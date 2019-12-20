@@ -107,8 +107,27 @@ class StatTracker
   end
 
   def count_of_teams
-    @team_collection.teams.each do |team|
+    @teams_collection.teams.each do |team|
       team
     end.length
   end
+
+  # def best_offense
+  #   goals_scored = @
+  #
+  #
+  # end
+  def highest_scoring_visitor
+    away_teams_goals = Hash.new(0)
+    @games_collection.games.map do |game|
+      away_teams_goals[game.away_team_id] += game.away_goals.to_i
+    end
+    team_names_ids = Hash.new(0)
+    @teams_collection.teams.each do |team|
+      team_names_ids[team.team_id] = team.abbreviation
+    end
+    x = away_teams_goals.max_by{ |k, v| v}
+    team_names_ids[x[0]]
+  end
+
 end

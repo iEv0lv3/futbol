@@ -11,7 +11,7 @@ require './lib/game_team_collection'
 class StatTrackerTest < Minitest::Test
   def setup
     game_path = './test/fixtures/games_truncated.csv'
-    team_path = './test/fixtures/teams_truncated.csv'
+    team_path = './data/teams.csv'
     # game_team_path = './test/fixtures/game_teams_truncated.csv'
     games = GameCollection.new(game_path)
     teams = TeamCollection.new(team_path)
@@ -99,7 +99,11 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_count_of_teams
-    assert_instance_of Integer, @stat_tracker.count_of_teams
-    assert_equal 32, @stat_tracker.count_of_teams
+    assert_instance_of Integer, @new_tracker.count_of_teams
+    assert_equal 32, @new_tracker.count_of_teams
+  end
+
+  def test_highest_scoring_visitor
+    assert_equal "RSL", @new_tracker.highest_scoring_visitor
   end
 end
