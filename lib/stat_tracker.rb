@@ -54,6 +54,7 @@ class StatTracker
 
   def biggest_blowout
     blowout = {}
+    
     @games_collection.games.find_all do |game|
       margin = (game.home_goals.to_i - game.away_goals.to_i).abs
       if blowout.empty?
@@ -68,6 +69,7 @@ class StatTracker
 
   def count_of_games_by_season
     season = Hash.new(0)
+
     @games_collection.games.each do |game|
       season[game.season] += 1
     end
@@ -114,7 +116,8 @@ class StatTracker
 
   def best_offense
     goals_scored = Hash.new(0)
-    @games_collection.games.each do |game|
+
+    @games_collection.games.map do |game|
       if goals_scored.has_key?(game.away_team_id)
         goals_scored[game.away_team_id] << game.away_goals.to_i
       elsif !goals_scored.has_key?(game.away_team_id)
@@ -129,6 +132,7 @@ class StatTracker
       end
     end
     team_names_ids = Hash.new(0)
+
     @teams_collection.teams.each do |team|
       team_names_ids[team.team_id] = team.abbreviation
     end
@@ -142,6 +146,7 @@ class StatTracker
 
   def worst_offense
     goals_scored = Hash.new(0)
+
     @games_collection.games.each do |game|
       if goals_scored.has_key?(game.away_team_id)
         goals_scored[game.away_team_id] << game.away_goals.to_i
@@ -157,9 +162,10 @@ class StatTracker
       end
     end
     team_names_ids = Hash.new(0)
+
     @teams_collection.teams.each do |team|
       team_names_ids[team.team_id] = team.abbreviation
-    end 
+    end
       goals_scored.each do |team|
         goals_scored_averages = team[1].sum / team[1].length
         goals_scored[team[0]] = goals_scored_averages
@@ -170,6 +176,7 @@ class StatTracker
 
   def best_defense
     goals_allowed = Hash.new(0)
+
     @games_collection.games.each do |game|
       if goals_allowed.has_key?(game.away_team_id)
         goals_allowed[game.away_team_id] << game.home_goals.to_i
@@ -185,6 +192,7 @@ class StatTracker
       end
     end
     team_names_ids = Hash.new(0)
+
     @teams_collection.teams.each do |team|
       team_names_ids[team.team_id] = team.abbreviation
     end
@@ -192,13 +200,13 @@ class StatTracker
       goals_allowed_averages = team[1].sum / team[1].length
         goals_allowed[team[0]] = goals_allowed_averages
       end
-      require "pry"; binding.pry
         team_id_max_goals = goals_allowed.min_by{ |k, v| v}
         team_names_ids[team_id_max_goals[0]]
   end
 
   def worst_defense
     goals_allowed = Hash.new(0)
+
     @games_collection.games.each do |game|
       if goals_allowed.has_key?(game.away_team_id)
         goals_allowed[game.away_team_id] << game.home_goals.to_i
@@ -214,6 +222,7 @@ class StatTracker
       end
     end
     team_names_ids = Hash.new(0)
+
     @teams_collection.teams.each do |team|
       team_names_ids[team.team_id] = team.abbreviation
     end
@@ -227,10 +236,12 @@ class StatTracker
 
   def highest_scoring_visitor
     away_teams_goals = Hash.new(0)
+
     @games_collection.games.map do |game|
       away_teams_goals[game.away_team_id] += game.away_goals.to_i
     end
     team_names_ids = Hash.new(0)
+
     @teams_collection.teams.each do |team|
       team_names_ids[team.team_id] = team.abbreviation
     end
@@ -240,10 +251,12 @@ class StatTracker
 
   def highest_scoring_home_team
     home_teams_goals = Hash.new(0)
+
     @games_collection.games.map do |game|
       home_teams_goals[game.home_team_id] += game.home_goals.to_i
     end
     team_names_ids = Hash.new(0)
+
     @teams_collection.teams.each do |team|
       team_names_ids[team.team_id] = team.abbreviation
     end
