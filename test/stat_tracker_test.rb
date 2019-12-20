@@ -36,11 +36,11 @@ class StatTrackerTest < Minitest::Test
 
   def test_stat_tracker_average_goals_by_season
     average_hash = {
-      "20122013"=>3.85, 
-      "20142015"=>4.02, 
-      "20152016"=>4.1, 
-      "20162017"=>4.36, 
-      "20172018"=>4.16, 
+      "20122013"=>3.85,
+      "20142015"=>4.02,
+      "20152016"=>4.1,
+      "20162017"=>4.36,
+      "20172018"=>4.16,
       "20132014"=>4.27
     }
 
@@ -63,11 +63,11 @@ class StatTrackerTest < Minitest::Test
 
   def test_count_of_games_by_season
     count_game_hash = {
-      "20122013"=>33, 
-      "20142015"=>49, 
-      "20152016"=>90, 
-      "20162017"=>73, 
-      "20172018"=>68, 
+      "20122013"=>33,
+      "20142015"=>49,
+      "20152016"=>90,
+      "20162017"=>73,
+      "20172018"=>68,
       "20132014"=>52
     }
     assert_equal count_game_hash, @new_tracker.count_of_games_by_season
@@ -96,5 +96,10 @@ class StatTrackerTest < Minitest::Test
     team_2_visitor = @new_tracker.percentage_visitor_wins
     assert_instance_of Float, team_2_visitor
     assert_equal 0.39, team_2_visitor
-  end  
+  end
+
+  def test_count_of_teams
+    assert_instance_of Integer, @stat_tracker.count_of_teams
+    assert_equal 32, @stat_tracker.count_of_teams
+  end
 end

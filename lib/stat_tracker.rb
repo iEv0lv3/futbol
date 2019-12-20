@@ -98,11 +98,17 @@ class StatTracker
     visitor_wins = 0
     total_games = @games_collection.games.length
 
-    @games_collection.games.each do |game|       
+    @games_collection.games.each do |game|
       if game.home_goals.to_i < game.away_goals.to_i
         visitor_wins += 1
       end
     end
     (visitor_wins / total_games.to_f).abs.round(2)
+  end
+
+  def count_of_teams
+    @team_collection.teams.each do |team|
+      team
+    end.length
   end
 end
