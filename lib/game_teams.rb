@@ -1,6 +1,6 @@
 class GameTeams
   attr_reader :team_id,
-              :HoA,
+              :hoa,
               :result,
               :settled_in,
               :head_coach,
@@ -12,7 +12,7 @@ class GameTeams
 
   def initialize(row)
     @team_id = row[:team_id]
-    @hoa = row[:HoA]
+    @hoa = row[:hoa]
     @result = row[:result]
     @settled_in = row[:settled_in]
     @head_coach = row[:head_coach]
