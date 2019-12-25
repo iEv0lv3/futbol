@@ -141,8 +141,8 @@ class StatTrackerTest < Minitest::Test
 
   def test_lowest_scoring_home_team_method
     team_1 = @stat_tracker.lowest_scoring_home_team
-require 'pry'; binding.pry
     assert_instance_of String, team_1
+    assert_equal "New England Revolution", team_1
   end
 
   # def test_winningest_team_method

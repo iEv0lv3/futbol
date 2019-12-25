@@ -150,19 +150,24 @@ class StatTracker
     average_scores = {}
 
     @game_teams_collection.collection.each do |team|
+      team_name = @team_collection.collection[team.last.team_id].team_name
       if average_scores.has_key?(team.last.team_id) && team.last.hoa == 'home'
-        average_scores[team.last.team_id] << team.last.goals.to_i
+        average_scores[team_name] << team.last.goals.to_i
       elsif !average_scores.has_key?(team.last.team_id) && team.last.hoa == 'home'
-        average_scores[team.last.team_id] = [team.last.goals.to_i]
+        average_scores[team_name] = [team.last.goals.to_i]
       end
     end
 
-    # average_scores.each do |team|
-    #   averages = team[1].sum / team[1].length
-    #   average_scores[team[0]] = averages.to_s
-    # end
+    average_scores.each do |team|
+      averages = team[1].sum / team[1].length
+      average_scores[team[0]] = averages.to_s
+    end
 
-require 'pry'; binding.pry
+    output = average_scores.min_by { |x|
+      x.last.to_i
+    }
+
+    output.first
   end
 
   # def winningest_team
