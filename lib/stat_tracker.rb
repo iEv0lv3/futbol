@@ -129,21 +129,27 @@ class StatTracker
   end
 
   def lowest_scoring_visitor
-    # team_ids_with_average_scores = {}
+    average_scores = {}
 
-    # @game_teams_collection.collection.each do |team|
-    #   if team_ids_with_average_scores.has_key?(team.last.team_id) && team.last.hoa == 'away'
-    #     team_ids_with_average_scores[team.last.team_id] << team.last.goals.to_i
-    #   elsif !team_ids_with_average_scores.has_key?(team.last.team_id) && team.last.hoa == 'away'
-    #     team_ids_with_average_scores[team.last.team_id] = [team.last.goals.to_i]
-    #   end
-    # end
+    @game_teams_collection.collection.each do |team|
+      team_name = @team_collection.collection[team.last.team_id].team_name
+      if average_scores.has_key?(team.last.team_id) && team.last.hoa == 'home'
+        average_scores[team_name] << team.last.goals.to_i
+      elsif !average_scores.has_key?(team.last.team_id) && team.last.hoa == 'home'
+        average_scores[team_name] = [team.last.goals.to_i]
+      end
+    end
 
-    # team_ids_with_average_scores.each do |team|
-    # average_away_goals = team[1].sum / team[1].length
-    # team_ids_with_average_scores[team[0]] = average_away_goals.to_s
-    # end
+    average_scores.each do |team|
+      averages = team[1].sum / team[1].length
+      average_scores[team[0]] = averages.to_s
+    end
 
+    output = average_scores.max_by { |x|
+      x.last.to_i
+    }
+
+    output.first
   end
 
   def lowest_scoring_home_team

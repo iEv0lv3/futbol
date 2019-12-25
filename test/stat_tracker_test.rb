@@ -133,11 +133,11 @@ class StatTrackerTest < Minitest::Test
   # end
 
 
-  # def test_lowest_scoring_visitor_method
-    # team_1 = @stat_tracker.lowest_scoring_visitor
-    # assert_instance_of String, team_1
-    # assert_equal TEAM, team_1
-  # end
+  def test_lowest_scoring_visitor_method
+    team_1 = @stat_tracker.lowest_scoring_visitor
+    assert_instance_of String, team_1
+    assert_equal "Reign FC", team_1
+  end
 
   def test_lowest_scoring_home_team_method
     team_1 = @stat_tracker.lowest_scoring_home_team
