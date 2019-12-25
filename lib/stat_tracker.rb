@@ -109,7 +109,7 @@ class StatTracker
         home_wins += 1
       end
     end
-    (home_wins / total_games.to_f).abs.round(2)
+    (home_wins / total_games.to_f).round(2)
   end
 
   def percentage_visitor_wins
@@ -117,17 +117,13 @@ class StatTracker
     total_games = @game_collection.collection.length
 
     @game_collection.collection.each do |game|
-      if game.home_goals.to_i < game.away_goals.to_i
-        @game_collection.collection.each do |game|       
-          if game[1].home_goals.to_i < game[1].away_goals.to_i
+      if game[1].home_goals.to_i < game[1].away_goals.to_i
           visitor_wins += 1
-          end
-        end
-    (visitor_wins / total_games.to_f).abs.round(2)
       end
     end
+    (visitor_wins / total_games.to_f).round(2)
   end
-
+      
   def lowest_scoring_visitor
     average_scores = {}
 
@@ -176,19 +172,11 @@ class StatTracker
     output.first
   end
 
-  # def winningest_team
-  #   team_wins = []
+  def winningest_team
 
-  #   @game_collection.games.each do |game|
-  #     if game.home_goals.to_i < game.away_goals.to_i
-  #       team_wins << game.away_team_id.to_i
-  #     elsif game.away_goals.to_i < game.home_goals.to_i
-  #       team_wins << game.home_team_id.to_i
-  #     end
-  #   end
 
-  #   team_wins.max_by {|i| team_wins.count(i)}
-  # end
+
+  end
 
   # def best_fans
     # percentage_home_wins - percentage_visitor_wins.abs

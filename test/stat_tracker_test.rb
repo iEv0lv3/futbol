@@ -116,21 +116,17 @@ class StatTrackerTest < Minitest::Test
   #   assert_equal 0.2, @stat_tracker.percentage_ties
   # end
 
-  # def test_percentage_home_wins
-  #   team_1_home = @stat_tracker.percentage_home_wins
-  #   assert_instance_of Float, team_1_home
-  #   assert_equal 0.44, team_1_home
-  # end
+  def test_percentage_home_wins
+    team_1_home = @stat_tracker.percentage_home_wins
+    assert_instance_of Float, team_1_home
+    assert_equal 0.44, team_1_home
+  end
 
-  # def test_percentage_visitor_wins
-  #   team_1_visitor = @stat_tracker.percentage_visitor_wins
-  #   assert_instance_of Float, team_1_visitor
-  #   assert_equal 0.39, team_1_visitor
-
-  #   team_2_visitor = @stat_tracker.percentage_visitor_wins
-  #   assert_instance_of Float, team_2_visitor
-  #   assert_equal 0.39, team_2_visitor
-  # end
+  def test_percentage_visitor_wins
+    team_1_visitor = @stat_tracker.percentage_visitor_wins
+    assert_instance_of Float, team_1_visitor
+    assert_equal 0.36, team_1_visitor
+  end
 
 
   def test_lowest_scoring_visitor_method
@@ -145,10 +141,10 @@ class StatTrackerTest < Minitest::Test
     assert_equal "New England Revolution", team_1
   end
 
-  # def test_winningest_team_method
-    # team_1 = @stat_tracker.winningest_team
+  def test_winningest_team_method
+    team_1 = @stat_tracker.winningest_team
     # assert_instance_of String, team_1
-  # end
+  end
 
   # def test_best_fans_method
   #   team_1 = @stat_tracker.best_fans
