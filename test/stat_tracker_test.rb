@@ -143,7 +143,8 @@ class StatTrackerTest < Minitest::Test
 
   def test_winningest_team_method
     team_1 = @stat_tracker.winningest_team
-    # assert_instance_of String, team_1
+    assert_instance_of String, team_1
+    assert_equal "Reign FC", team_1
   end
 
   # def test_best_fans_method

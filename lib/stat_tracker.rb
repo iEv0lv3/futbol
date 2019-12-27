@@ -123,7 +123,7 @@ class StatTracker
     end
     (visitor_wins / total_games.to_f).round(2)
   end
-      
+
   def lowest_scoring_visitor
     average_scores = {}
 
@@ -173,9 +173,32 @@ class StatTracker
   end
 
   def winningest_team
+    team_percentages = {}
 
+    @game_teams_collection.collection.each do |team|
+      team_name = @team_collection.collection[team.last.team_id].team_name
 
+      if !team_percentages.has_key?(team_name)
+        team_percentages[team_name] = [0,0,0]
+        team_percentages[team_name][0] += 1
+      elsif team_percentages.has_key?(team_name)
+        team_percentages[team_name][0] += 1
+      end
 
+      if team.last.result == 'WIN'
+        team_percentages[team_name][1] += 1
+      elsif team.last.result == 'LOSS'
+        team_percentages[team_name][2] += 1
+      end
+    end
+
+    team_percentages.each do |team, results|
+      team_win_average = results[1] / results[0].to_f
+      team_percentages[team] = team_win_average.round(2)
+    end
+
+     final_output = team_percentages.max_by{|team, win_average| win_average}
+     final_output.first
   end
 
   # def best_fans
