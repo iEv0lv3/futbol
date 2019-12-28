@@ -232,27 +232,40 @@ class StatTracker
      final_output.first
   end
 
-require 'pry'; binding.pry
-  # def worst_fans
-  #   team_percentages = {}
+  def worst_fans
+    team_percentages = {}
 
-  #   @game_teams_collection.collection.each do |team|
-  #     team_name = @team_collection.collection[team.last.team_id].team_name
+    @game_teams_collection.collection.each do |team|
+      team_name = @team_collection.collection[team.last.team_id].team_name
 
-  #     if !team_percentages.has_key?(team_name)
-  #       team_percentages[team_name] = [0,0,0]
-  #       team_percentages[team_name][0] += 1
-  #     elsif team_percentages.has_key?(team_name)
-  #       team_percentages[team_name][0] += 1
-  #     end
+      if !team_percentages.has_key?(team_name)
+        team_percentages[team_name] = [0,0,0,0,0]
+        team_percentages[team_name][0] += 1
+      elsif team_percentages.has_key?(team_name)
+        team_percentages[team_name][0] += 1
+      end
 
-  #     if team.last.result == 'WIN'
-  #       team_percentages[team_name][1] += 1
-  #     elsif team.last.result == 'LOSS'
-  #       team_percentages[team_name][2] += 1
-  #     end
-  #   end
+      if team.last.hoa == 'home' && team.last.result == 'WIN'
+        team_percentages[team_name][1] += 1
+      elsif team.last.hoa == 'home' && team.last.result == 'LOSS'
+        team_percentages[team_name][2] += 1
+      elsif team.last.hoa == 'away' && team.last.result == 'WIN'
+        team_percentages[team_name][3] += 1
+      elsif team.last.hoa == 'away' && team.last.result == 'LOSS'
+        team_percentages[team_name][4] += 1
+      end
+    end
 
-    # percentage_home_wins - percentage_visitor_wins.abs
-  # end
+    team_percentages.each do |team, results|
+      team_home_win_average = results[1] / results[0].to_f
+      team_home_loss_average = results[2] / results[0].to_f
+      team_away_win_average = results[3] / results[0].to_f
+      team_away_loss_average = results[4] / results[0].to_f
+      # still can't access away games?
+      team_percentages[team] = [team_home_win_average, team_home_loss_average, team_away_win_average, team_away_loss_average]
+    end
+
+     final_output = team_percentages
+     final_output
+  end
 end

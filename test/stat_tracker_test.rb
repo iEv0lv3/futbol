@@ -153,10 +153,9 @@ class StatTrackerTest < Minitest::Test
     assert_equal "Reign FC", team_1
   end
 
-  # def test_worst_fans_method
-require 'pry'; binding.pry
-    # team_1 = @stat_tracker.worst_fans
+  def test_worst_fans_method
+    team_1 = @stat_tracker.worst_fans
   #   assert_instance_of String, team_1
   #   assert_equal 0.36, team_1_visitor
-  # end
+  end
 end
