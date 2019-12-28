@@ -201,11 +201,58 @@ class StatTracker
      final_output.first
   end
 
-  # def best_fans
-    # percentage_home_wins - percentage_visitor_wins.abs
-  # end
+  def best_fans
+    team_percentages = {}
 
+    @game_teams_collection.collection.each do |team|
+      team_name = @team_collection.collection[team.last.team_id].team_name
+
+      if !team_percentages.has_key?(team_name)
+        team_percentages[team_name] = [0,0,0]
+        team_percentages[team_name][0] += 1
+      elsif team_percentages.has_key?(team_name)
+        team_percentages[team_name][0] += 1
+      end
+
+      if team.last.hoa == 'home' && team.last.result == 'WIN'
+        team_percentages[team_name][1] += 1
+      elsif team.last.hoa == 'away' && team.last.result == 'WIN'
+        team_percentages[team_name][2] += 1
+      end
+    end
+
+    team_percentages.each do |team, results|
+      team_home_win_average = results[1] / results[0].to_f
+      team_away_win_average = results[2] / results[0].to_f
+      team_averages_difference = team_home_win_average - team_away_win_average
+      team_percentages[team] = team_averages_difference.abs.round(2)
+    end
+
+     final_output = team_percentages.max_by{|team, fans_average| fans_average}
+     final_output.first
+  end
+
+require 'pry'; binding.pry
   # def worst_fans
+  #   team_percentages = {}
+
+  #   @game_teams_collection.collection.each do |team|
+  #     team_name = @team_collection.collection[team.last.team_id].team_name
+
+  #     if !team_percentages.has_key?(team_name)
+  #       team_percentages[team_name] = [0,0,0]
+  #       team_percentages[team_name][0] += 1
+  #     elsif team_percentages.has_key?(team_name)
+  #       team_percentages[team_name][0] += 1
+  #     end
+
+  #     if team.last.result == 'WIN'
+  #       team_percentages[team_name][1] += 1
+  #     elsif team.last.result == 'LOSS'
+  #       team_percentages[team_name][2] += 1
+  #     end
+  #   end
+
     # percentage_home_wins - percentage_visitor_wins.abs
   # end
 end
