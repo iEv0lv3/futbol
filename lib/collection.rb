@@ -1,3 +1,5 @@
+require 'csv'
+
 class Collection
   attr_reader :collection
 
@@ -6,7 +8,7 @@ class Collection
   end
 
   def from_csv(csv_file_path)
-    CSV.read(csv_file_path, headers: true, header_converters: :symbol)
+    CSV.foreach(csv_file_path, headers: true, header_converters: :symbol)
   end
 
   def create_collection(csv_file_path, collection_type)
