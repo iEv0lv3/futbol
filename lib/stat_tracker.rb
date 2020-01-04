@@ -11,7 +11,7 @@ class StatTracker
     StatTracker.new(game_file, team_file, game_team_file)
   end
 
-  def initialize(game_file, team_file)
+  def initialize(game_file, team_file, game_team_file)
     @games_collection = GameCollection.new(game_file)
     @teams_collection = TeamCollection.new(team_file)
     @game_teams_collection = GameTeamCollection.new(game_team_file)
@@ -62,7 +62,7 @@ class StatTracker
 
   def biggest_blowout
     blowout = {}
-    
+
     @games_collection.games.find_all do |game|
       margin = (game.home_goals.to_i - game.away_goals.to_i).abs
       if blowout.empty?
@@ -208,8 +208,8 @@ class StatTracker
       goals_allowed_averages = team[1].sum / team[1].length
         goals_allowed[team[0]] = goals_allowed_averages
       end
-        team_id_max_goals = goals_allowed.min_by{ |k, v| v}
-        team_names_ids[team_id_max_goals[0]]
+      team_id_max_goals = goals_allowed.min_by{ |k, v| v}
+      team_names_ids[team_id_max_goals[0]]
   end
 
   def worst_defense
@@ -217,9 +217,7 @@ class StatTracker
 
     @games_collection.games.each do |game|
       if goals_allowed.has_key?(game.away_team_id)
-        goals_allowed[game.away_team_id] << game.home_goals.to_i
-      elsif !goals_allowed.has_key?(game.away_team_id)
-        goals_allowed[game.away_team_id] = [game.home_goals.to_i]
+        goals_allowed[game.away_team_id] = game.home_goals.to_i << game.home_goals.to_i
       end
     end
     @games_collection.games.map do |game|

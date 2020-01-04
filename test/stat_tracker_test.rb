@@ -12,10 +12,10 @@ class StatTrackerTest < Minitest::Test
   def setup
     game_path = './test/fixtures/games_truncated.csv'
     team_path = './data/teams.csv'
-    # game_team_path = './test/fixtures/game_teams_truncated.csv'
+    game_team_path = './test/fixtures/game_teams_truncated.csv'
     games = GameCollection.new(game_path)
     teams = TeamCollection.new(team_path)
-    # game_team = GameTeamCollection.new(game_team_path)
+    game_team = GameTeamCollection.new(game_team_path)
     @new_tracker = StatTracker.new(games, teams)
   end
 
