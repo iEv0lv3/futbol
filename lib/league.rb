@@ -20,34 +20,34 @@ class League
     :venue,
     :venue_link
 
-  def initialize(row)
-    @team_id = row[:team_id] # GameTeams + Main Key
+  def initialize(source, row)
+    @team_id = source[row][:team_id] # GameTeams + Main Key
 
-    @game_id = row[:game_id] # GameTeams link to Game data + Value-Hash Key
-    @game_id = row[:game_id] # Game
+    @game_id = source[row][:game_id] # GameTeams link to Game data + Value-Hash Key
+    @game_id = source[row][:game_id] # Game
 
-    @date_time = row[:date_time] # Game
-    @hoa = row[:hoa] # GameTeams
-    @home_team_id = row[:home_team_id] # Game
-    @away_team_id = row[:away_team_id] # Game
+    @date_time = source[row][:date_time] # Game
+    @hoa = source[row][:hoa] # GameTeams
+    @home_team_id = source[row][:home_team_id] # Game
+    @away_team_id = source[row][:away_team_id] # Game
 
-    @goals = row[:goals] # GameTeams
-    @home_goals = row[:home_goals] # Game
-    @away_goals = row[:away_goals] # Game
+    @goals = source[row][:goals] # GameTeams
+    @home_goals = source[row][:home_goals] # Game
+    @away_goals = source[row][:away_goals] # Game
 
-    @shots = row[:shots] # GameTeams
-    @tackles = row[:tackles] # GameTeams
-    @giveaways = row[:giveaways] # GameTeams
-    @takeaways = row[:takeaways] # GameTeams
+    @shots = source[row][:shots] # GameTeams
+    @tackles = source[row][:tackles] # GameTeams
+    @giveaways = source[row][:giveaways] # GameTeams
+    @takeaways = source[row][:takeaways] # GameTeams
 
-    @result = row[:result] # GameTeams
-    @settled_in = row[:settled_in] # GameTeams
+    @result = source[row][:result] # GameTeams
+    @settled_in = source[row][:settled_in] # GameTeams
 
-    @head_coach = row[:head_coach] # GameTeams
-    @season = row[:season] # Game
-    @type = row[:type] # Game
-    @venue = row[:venue] # Game
-    @venue_link = row[:venue_link] # Game
+    @head_coach = source[row][:head_coach] # GameTeams
+    @season = source[row][:season] # Game
+    @type = source[row][:type] # Game
+    @venue = source[row][:venue] # Game
+    @venue_link = source[row][:venue_link] # Game
   end
 end
 
