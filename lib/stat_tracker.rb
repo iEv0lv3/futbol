@@ -2,17 +2,14 @@ require 'csv'
 require_relative 'game'
 require_relative 'team'
 require_relative 'game_teams'
-require_relative 'season'
 require_relative 'collection'
 require_relative 'game_collection'
 require_relative 'team_collection'
 require_relative 'game_teams_collection'
-require_relative 'season_collection'
 
 class StatTracker
   attr_reader :game_collection,
               :team_collection,
-              :season_collection,
               :game_teams_collection
 
   def self.from_csv(locations)
@@ -26,7 +23,6 @@ class StatTracker
   def initialize(games, teams, game_teams)
     @game_collection = GameCollection.new(games)
     @team_collection = TeamCollection.new(teams)
-    @season_collection = SeasonCollection.new(games)
     @game_teams_collection = GameTeamsCollection.new(game_teams)
   end
 
@@ -232,10 +228,10 @@ class StatTracker
      final_output.first
   end
 
-  def worst_fans
-    data_test_home = @game_teams_collection.collection.values.find_all { |a| a.hoa == "home"}
-    data_test_away = @game_teams_collection.collection.values.find_all { |a| a.hoa == "away"}
-require 'pry'; binding.pry
+#   def worst_fans
+#     data_test_home = @game_teams_collection.collection.values.find_all { |a| a.hoa == "home"}
+#     data_test_away = @game_teams_collection.collection.values.find_all { |a| a.hoa == "away"}
+# require 'pry'; binding.pry
   #   team_percentages = {}
 
   #   @game_teams_collection.collection.each do |team|
@@ -270,5 +266,17 @@ require 'pry'; binding.pry
 
   #    final_output = team_percentages
   #    final_output
+  # end
+
+  def biggest_bust(season_id)
+    @game_collection.collection.values.each do |game|
+      if game.season == season_id 
+        
+
+require 'pry'; binding.pry
+    end
+
+
+    
   end
 end
