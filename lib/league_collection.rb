@@ -14,28 +14,29 @@ class LeagueCollection < Collection
 
     end
   end
+end
 
-  # League = {team_id: # GameTeam
-  #               {game_id: # UID
-  #               [:date_time, # Game
-  #                :hoa, # GameTeams
-  #                :home_team_id, # Game
-  #                :away_team_id, # Game
+# League = {team_id: # GameTeam
+#               {game_id: # UID
+#               [:date_time, # Game
+#                :hoa, # GameTeams
+#                :home_team_id, # Game
+#                :away_team_id, # Game
 
-  #                :goals, # GameTeams
-  #                :home_goals, # Game
-  #                :away_goals, # Game
+#                :goals, # GameTeams
+#                :home_goals, # Game
+#                :away_goals, # Game
 
-  #                :shots, # GameTeams
-  #                :tackles, # GameTeams
-  #                :giveaways, # GameTeams
-  #                :takeaways, # GameTeams
+#                :shots, # GameTeams
+#                :tackles, # GameTeams
+#                :giveaways, # GameTeams
+#                :takeaways, # GameTeams
 
-  #                :result, # GameTeams
-  #                :settled_in, # GameTeams
+#                :result, # GameTeams
+#                :settled_in, # GameTeams
 
-  #                :head_coach, # GameTeams
-  #                :season, # Game
-  #                :venue, # Game
-  #                :venue_link # Game
-  #               ]}}
+#                :head_coach, # GameTeams
+#                :season, # Game
+#                :venue, # Game
+#                :venue_link # Game
+#               ]}}
