@@ -75,14 +75,23 @@ module Calculateable
     @game_teams.collection.each do |game|
       team_game = @games.collection[game[1].game_id]
       if game[1].team_id == team_game.home_team_id
-        team_game.home_head_coach = game[1].head_coach
+        team_game.home_coach = game[1].head_coach
         team_game.home_shots = game[1].shots
         team_game.home_tackles = game[1].tackles
       elsif game[1].team_id == team_game.away_team_id
-        team_game.away_head_coach = game[1].head_coach
+        team_game.away_coach = game[1].head_coach
         team_game.away_shots = game[1].shots
         team_game.away_tackles = game[1].tackles
       end
     end
+  end
+
+  def divide_shots_by_goals(shots_hash, season_id)
+    team_accuracy = {}
+    shots_hash.each do |team_id, tot_shots|
+      team_accuracy[team_id] = tot_shots.to_f / team_goals_hash(season_id)[team_id]
+    end
+
+    team_accuracy
   end
 end

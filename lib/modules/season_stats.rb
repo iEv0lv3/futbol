@@ -5,25 +5,11 @@ module SeasonStats
   include Calculateable
   include Gatherable
 
-  def biggest_bust(season_id)
-    # in: season_id
-    # out: team_id
-    # team_win_percentage(wins_by_team(@seasons.teams[season_id]))
-    #     team_win_percentage(postseason_games_by_team)
-    #     team_win_percentage(regular_season_games_by_team)
-
-    # @seasons.teams.reduce({}) do |hash, season|
-    #   require 'pry'; binding.pry
-
-    #   season(season_id)
-    # end
-    # get_team_name_by_id(team_id)
+  def most_accurate_team(season_id)
+    get_team_name_by_id(divide_shots_by_goals(team_shots_hash(season_id), season_id).max_by { |_id, accuracy| accuracy}[0])
   end
 
-  def winningest_coach(season_id)
-    total_games = total_season_games_team_id(season_id)
-    require 'pry'; binding.pry
-    record = total_season_wins_losses_team_id(season_id)
+  def least_accurate_team(season_id)
+    get_team_name_by_id(divide_shots_by_goals(team_shots_hash(season_id), season_id).min_by { |_id, accuracy| accuracy}[0])
   end
-
 end

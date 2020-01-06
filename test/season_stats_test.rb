@@ -28,7 +28,11 @@ class SeasonStatsTest < Minitest::Test
   end
 
   def test_most_accurate_team
-    assert_equal 'Montreal Impact', @stat_tracker.most_accurate_team('20122013')
+    assert_equal 'New York City FC', @stat_tracker.most_accurate_team('20122013')
+  end
+
+  def test_least_accurate_team
+    assert_equal 'DC United', @stat_tracker.least_accurate_team('20122013')
   end
 
   def test_biggest_bust_method
@@ -38,7 +42,7 @@ class SeasonStatsTest < Minitest::Test
   end
 
   def test_season_stats_can_get_winningest_coach
-    require 'pry'; binding.pry
+    skip
     assert_equal 'Claude Julien', @stat_tracker.winningest_coach('20132014')
     assert_equal 'Alain Vigneault', @stat_tracker.winningest_coach('20142015')
   end
