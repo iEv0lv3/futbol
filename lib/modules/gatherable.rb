@@ -212,25 +212,4 @@ module Gatherable
     end
   end
 
-  def season_wins_hash(team_id)
-    seasons.teams.map do |team|
-      if team[0] == team_id
-        team[1].reduce({}) do |seasons_hash, game_collection|
-          seasons_hash[game_collection[0]] = 0
-          seasons_hash
-        end
-      end
-    end
-  end
-
-  def season_game_mathematics_hash(team_id)
-    season_wins_hash(team_id).map do |season|
-      require "pry"; binding.pry
-    # .reduce(Hash.new(0)) do |wins_hash, game|
-    #     require "pry"; binding.pry
-    #   if game.home_team_id ==  team_id && game.home_goals > game.away_goals
-    #   end
-    end
-  end
-
 end
