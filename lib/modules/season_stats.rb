@@ -13,9 +13,9 @@ module SeasonStats
     get_team_name_by_id(divide_shots_by_goals(team_shots_hash(season_id), season_id).max_by { |_id, accuracy| accuracy}[0])
   end
 
-  # def best_season(team_id)
-  #   shoot_it(team_id)
-  # end
+  def best_season(team_id)
+    shoot_it(team_id)
+  end
 
   def most_tackles(season_id)
     team_tackles = {}
