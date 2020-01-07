@@ -17,17 +17,23 @@ module SeasonStats
     season_game_mathematics_hash(team_id)
   end
 
-  def most_tackles(season_id)
-    team_tackles = {}
-    @games.collection.each do |game|
-      if game.last.season == season_id
-        team_tackles[game.last.away_team_id] = game.last.away_tackles.to_i
-        team_tackles[game.last.home_team_id] = game.last.home_tackles.to_i
+  def total_tackles_by_team_per_season(season_id) 
+    @games.collection.inject(Hash.new(0)) do |team_tackles, game|
+      if game[1].season == season_id
+        team_tackles[game.last.home_team_id.to_s] += game.last.home_tackles.to_i
+        team_tackles[game.last.away_team_id.to_s] += game.last.away_tackles.to_i
       end
+      team_tackles
     end
+  end
 
-    team_id = team_tackles.max_by { |team| team.last}
+  def most_tackles(season_id)
+    team_id = total_tackles_by_team_per_season(season_id).max_by { |_team, tackles| tackles }
+    get_team_name_by_id(team_id.first)
+  end
 
+  def fewest_tackles(season_id)
+    team_id = total_tackles_by_team_per_season(season_id).min_by { |_team, tackles| tackles }
     get_team_name_by_id(team_id.first)
   end
 

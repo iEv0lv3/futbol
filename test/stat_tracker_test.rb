@@ -215,26 +215,34 @@ class StatTrackerTest < Minitest::Test
     assert_equal ['Houston Dynamo', 'Utah Royals FC'], @stat_tracker.worst_fans
   end
 
+  def test_stat_tracker_can_get_most_goals_scored
+    assert_instance_of Integer, @stat_tracker.most_goals_scored('18')
+    assert_equal 7, @stat_tracker.most_goals_scored('18')
+  end
+
+  def test_stat_tracker_can_get_fewest_goals_scored
+    assert_instance_of Integer, @stat_tracker.fewest_goals_scored('18')
+    assert_equal 0, @stat_tracker.fewest_goals_scored('18')
+  end
+
+  def test_stat_tracker_can_get_worst_loss
+    assert_instance_of Integer, @stat_tracker.worst_loss('18')
+    assert_equal 4, @stat_tracker.worst_loss('18')   
+  end
+
   def test_stat_tracker_can_get_most_tackles
-    assert_instance_of String, @stat_tracker.most_tackles('20172018')
-    assert_equal "Minnesota United FC", @stat_tracker.most_tackles('20172018')
-
     assert_instance_of String, @stat_tracker.most_tackles('20132014')
-    assert_equal "Sporting Kansas City", @stat_tracker.most_tackles('20132014')
+    assert_equal "FC Cincinnati", @stat_tracker.most_tackles('20132014')
 
-    assert_instance_of String, @stat_tracker.most_tackles('20152016')
-    assert_equal "Vancouver Whitecaps FC", @stat_tracker.most_tackles('20152016')
-
+    assert_instance_of String, @stat_tracker.most_tackles('20142015')
+    assert_equal "Seattle Sounders FC", @stat_tracker.most_tackles('20142015')
   end
 
   def test_stat_tracker_can_get_fewest_tackles
-    assert_instance_of String, @stat_tracker.fewest_tackles('20172018')
-    assert_equal "New England Revolution", @stat_tracker.fewest_tackles('20172018')
-
     assert_instance_of String, @stat_tracker.fewest_tackles('20132014')
-    assert_equal "Montreal Impact", @stat_tracker.fewest_tackles('20132014')
+    assert_equal "Atlanta United", @stat_tracker.fewest_tackles('20132014')
 
-    assert_instance_of String, @stat_tracker.fewest_tackles('20152016')
-    assert_equal "Philadelphia Union", @stat_tracker.fewest_tackles('20152016')
+    assert_instance_of String, @stat_tracker.fewest_tackles('20142015')
+    assert_equal "Orlando City SC", @stat_tracker.fewest_tackles('20142015')
   end
 end
