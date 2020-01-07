@@ -38,12 +38,7 @@ module TeamStats
     percentage = ((wins.to_f / total_games) * 100).round(2)
     hash[:win_percentage] = percentage
     hash
-require_relative './calculateable'
-require_relative './gatherable'
-
-module TeamStats
-  include Calculateable
-  include Gatherable
+  end
 
   def favorite_opponent(team_id)
     team_wins = get_wins_by_opponent(team_id)
