@@ -14,6 +14,13 @@ require './lib/season_collection'
 
 class StatTrackerTest < Minitest::Test
   def setup
+    game_path = './test/fixtures/games_truncated.csv'
+    team_path = './data/teams.csv'
+    game_team_path = './test/fixtures/game_teams_truncated.csv'
+    games = GameCollection.new(game_path)
+    teams = TeamCollection.new(team_path)
+    game_team = GameTeamCollection.new(game_team_path)
+    @new_tracker = StatTracker.new(games, teams)
     game_path = './data/games.csv'
     team_path = './data/teams.csv'
     game_teams_path = './data/game_teams.csv'
@@ -131,6 +138,11 @@ class StatTrackerTest < Minitest::Test
     assert_equal 'Utah Royals FC', @stat_tracker.worst_offense
   end
 
+  def test_count_of_teams
+    assert_instance_of Integer, @new_tracker.count_of_teams
+    assert_equal 32, @new_tracker.count_of_teams
+  end
+  
   def test_stat_tracker_can_get_best_defense
     assert_instance_of String, @stat_tracker.best_defense
     assert_equal 'FC Cincinnati', @stat_tracker.best_defense
@@ -192,17 +204,17 @@ class StatTrackerTest < Minitest::Test
 
   def test_stat_tracker_can_get_most_tackles
     assert_instance_of String, @stat_tracker.most_tackles('20132014')
-    assert_equal "FC Cincinnati", @stat_tracker.most_tackles('20132014')
+    assert_equal 'FC Cincinnati', @stat_tracker.most_tackles('20132014')
 
     assert_instance_of String, @stat_tracker.most_tackles('20142015')
-    assert_equal "Seattle Sounders FC", @stat_tracker.most_tackles('20142015')
+    assert_equal 'Seattle Sounders FC', @stat_tracker.most_tackles('20142015')
   end
 
   def test_stat_tracker_can_get_fewest_tackles
     assert_instance_of String, @stat_tracker.fewest_tackles('20132014')
-    assert_equal "Atlanta United", @stat_tracker.fewest_tackles('20132014')
+    assert_equal 'Atlanta United', @stat_tracker.fewest_tackles('20132014')
 
     assert_instance_of String, @stat_tracker.fewest_tackles('20142015')
-    assert_equal "Orlando City SC", @stat_tracker.fewest_tackles('20142015')
+    assert_equal 'Orlando City SC', @stat_tracker.fewest_tackles('20142015')
   end
 end

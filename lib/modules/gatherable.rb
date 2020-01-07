@@ -174,4 +174,26 @@ module Gatherable
     end
     hash
   end
+
+  def team_goals_hash(season_id)
+    @games.collection.values.reduce(Hash.new(0)) do |goals_hash, value|
+      if value.season == season_id
+        goals_hash[value.home_team_id] += value.home_goals.to_i
+        goals_hash[value.away_team_id] += value.away_goals.to_i
+      end
+
+      goals_hash
+    end
+  end
+
+  def team_shots_hash(season_id)
+    @games.collection.values.reduce(Hash.new(0)) do |shots_hash, value|
+      if value.season == season_id
+        shots_hash[value.home_team_id] += value.home_shots.to_i
+        shots_hash[value.away_team_id] += value.away_shots.to_i
+      end
+
+      shots_hash
+    end
+  end
 end
