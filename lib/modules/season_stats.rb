@@ -13,10 +13,6 @@ module SeasonStats
     get_team_name_by_id(divide_shots_by_goals(team_shots_hash(season_id), season_id).max_by { |_id, accuracy| accuracy}[0])
   end
 
-  def best_season(team_id)
-    season_game_mathematics_hash(team_id)
-  end
-
   def total_tackles_by_team_per_season(season_id) 
     @games.collection.inject(Hash.new(0)) do |team_tackles, game|
       if game[1].season == season_id
