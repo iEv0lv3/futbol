@@ -175,21 +175,6 @@ module Gatherable
     hash
   end
 
-  def total_season_games_team_id(season_id)
-    @seasons.teams.reduce({}) do |hash, team|
-      hash[team.first] = team.last[season_id].size
-      hash
-    end
-  end
-
-  def total_season_wins_losses_team_id(season_id)
-    @seasons.teams.reduce({}) do |hash, team|
-      team_season = team[season_id]
-      hash = win_or_loss(team.first, team_season)
-      hash
-    end
-  end
-
   def team_goals_hash(season_id)
     @games.collection.values.reduce(Hash.new(0)) do |goals_hash, value|
       if value.season == season_id
@@ -211,5 +196,4 @@ module Gatherable
       shots_hash
     end
   end
-
 end
