@@ -97,13 +97,13 @@ module Calculateable
   def league_win_percent_diff(home, away)
     home.inject(Hash.new(0)) do |hash, team|
       hash[team[0]] = (team[1] - away[team[0]]).abs.round(2)
-      hash 
+      hash
     end
   end
 
   def win_percentage_difference(regular, post)
     post.reduce(Hash.new(0)) do |hash, team|
-      next(hash) if team[1][:win_percentage].nan?
+      team[1][:win_percentage] = 0 if team[1][:win_percentage].nan?
 
       hash[team[0]] = (team[1][:win_percentage] - regular[team[0]][:win_percentage]).abs.round(2)
       hash
@@ -112,7 +112,7 @@ module Calculateable
 
   def win_percentage_increase(regular, post)
     post.reduce(Hash.new(0)) do |hash, team|
-      next(hash) if team[1][:win_percentage].nan?
+      team[1][:win_percentage] = 0 if team[1][:win_percentage].nan?
 
       hash[team[0]] = (team[1][:win_percentage] - regular[team[0]][:win_percentage]).round(2)
       hash
