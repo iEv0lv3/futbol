@@ -191,8 +191,21 @@ module Gatherable
         shots_hash[value.home_team_id] += value.home_shots.to_i
         shots_hash[value.away_team_id] += value.away_shots.to_i
       end
-      
+
       shots_hash
     end
   end
+
+  # def shoot_me(team_id)
+  #   games_count = 0
+  #   seasons.teams.reduce(Hash.new(0)) do |wins_hash, team|
+  #     require "pry"; binding.pry
+  #     if team[0] == team_id
+  #       games_count += 1
+  #       wins_hash[team[1].key] += team
+  #     end
+  #     wins_hash
+  #   end
+  # end
+
 end
