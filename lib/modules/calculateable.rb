@@ -80,15 +80,6 @@ module Calculateable
     end
   end
 
-  def divide_shots_by_goals(shots_hash, season_id)
-    team_accuracy = {}
-    shots_hash.each do |team_id, tot_shots|
-      team_accuracy[team_id] = tot_shots.to_f / team_goals_hash(season_id)[team_id]
-    end
-
-    team_accuracy
-  end
-  
   def create_season
     @games.collection.reduce(Hash.new({})) do |hash, game|
       h_team_id = game[1].home_team_id
@@ -112,7 +103,7 @@ module Calculateable
 
   def win_percentage_difference(regular, post)
     post.reduce(Hash.new(0)) do |hash, team|
-      next(hash) if team[1][:win_percentage].nan?
+      team[1][:win_percentage] = 0 if team[1][:win_percentage].nan?
 
       hash[team[0]] = (team[1][:win_percentage] - regular[team[0]][:win_percentage]).abs.round(2)
       hash
@@ -121,7 +112,7 @@ module Calculateable
 
   def win_percentage_increase(regular, post)
     post.reduce(Hash.new(0)) do |hash, team|
-      next(hash) if team[1][:win_percentage].nan?
+      team[1][:win_percentage] = 0 if team[1][:win_percentage].nan?
 
       hash[team[0]] = (team[1][:win_percentage] - regular[team[0]][:win_percentage]).round(2)
       hash
@@ -135,5 +126,14 @@ module Calculateable
       end
       hash
     end
+  end
+
+  def divide_shots_by_goals(shots_hash, season_id)
+    team_accuracy = {}
+    shots_hash.each do |team_id, tot_shots|
+      team_accuracy[team_id] = tot_shots.to_f / team_goals_hash(season_id)[team_id]
+    end
+  
+    team_accuracy
   end
 end
