@@ -204,4 +204,56 @@ module TeamStats
     hash[:win_percentage] = percentage
     hash
   end 
+  def seasonal_summary(team_id)
+    data = @games.collection.inject({}) do |seasons, game|
+      seasons[game[1].season] = {
+        postseason: {
+          win_percentage: team_postseason_win_percent(seasonal_wins_by_team(game[1].season, 'Postseason'))[team_id], # function
+          total_goals_scored: get_total_goals_scored(game[1].season, 'Postseason')[team_id],
+          total_goals_against: get_total_goals_against(game[1].season, 'Postseason')[team_id], # function
+          average_goals_scored: 0, # function
+          average_goals_against: 0 # function
+        },
+        regular_season: {
+          win_percentage: 0, # function
+          total_goals_scored: get_total_goals_scored(game[1].season, 'Regular Season')[team_id], # function
+          total_goals_against: get_total_goals_against(game[1].season, 'Regular Season')[team_id], # function
+          average_goals_scored: 0, # function
+          average_goals_against: 0 # function
+        }
+      }
+      seasons
+    end
+    require 'pry'; binding.pry
+  end
+
+  def get_total_goals_scored(season, type)
+    @games.collection.inject(Hash.new(0)) do |goals, game|
+      if game[1].season == season && game[1].type == type
+        goals[game[1].home_team_id] += game[1].home_goals.to_i
+        goals[game[1].away_team_id] += game[1].away_goals.to_i
+      end
+      goals
+    end
+  end
+
+  def get_total_goals_against(season, type)
+    @games.collection.inject(Hash.new(0)) do |goals, game|
+      if game[1].season == season && game[1].type == type
+        goals[game[1].home_team_id] += game[1].away_goals.to_i
+        goals[game[1].away_team_id] += game[1].home_goals.to_i
+      end
+      goals
+    end
+  end
+
+  def seasonal_wins_by_team(season, type)
+    @games.collection.inject(Hash.new(0)) do |wins, game|
+      if game[1].season == season && game[1].type == type && game[1].home_goals.to_i > game[1].away_goals.to_i
+        wins[game[1].home_team_id] += 1
+      elsif game[1].season == season && game[1].type == type && game[1].away_goals.to_i > game[1].home_goals.to_i
+        wins[game[1].home_team_id] += 1
+      end
+    end
+  end
 end
