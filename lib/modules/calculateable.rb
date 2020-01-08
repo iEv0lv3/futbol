@@ -119,4 +119,13 @@ module Calculateable
       hash
     end
   end
+
+  def divide_shots_by_goals(shots_hash, season_id)
+    team_accuracy = {}
+    shots_hash.each do |team_id, tot_shots|
+      team_accuracy[team_id] = tot_shots.to_f / team_goals_hash(season_id)[team_id]
+    end
+  
+    team_accuracy
+  end
 end
