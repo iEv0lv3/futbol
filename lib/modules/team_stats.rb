@@ -169,4 +169,8 @@ module TeamStats
     end
     team_goal_diff.max
   end
+
+  def seasonal_summary(team_id)
+    require 'pry'; binding.pry
+  end
 end
