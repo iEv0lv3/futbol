@@ -7,40 +7,6 @@ module TeamStats
   include Calculateable
   include SeasonStats
 
-  def favorite_opponent(team_id)
-    team_wins = get_wins_by_opponent(team_id)
-    team_games = get_total_games_by_opponent(team_id)
-    team_average_by_opponent = get_average_by_opponent(team_wins, team_games)
-
-    team_ident = team_average_by_opponent.max_by { |_opp_team, percent| percent }[0]
-    team_name = get_team_name_by_id(team_ident)
-
-    return team_name
-  end
-
-  def rival(team_id)
-    team_wins = get_wins_by_opponent(team_id)
-    team_games = get_total_games_by_opponent(team_id)
-    team_average_by_opponent = get_average_by_opponent(team_wins, team_games)
-
-    team_ident = team_average_by_opponent.min_by { |_opp_team, percent| percent }[0]
-    team_name = get_team_name_by_id(team_ident)
-
-    return team_name
-  end
-
-  def head_to_head(team_id)
-    team_wins = get_wins_by_opponent(team_id)
-    team_games = get_total_games_by_opponent(team_id)
-    team_average_by_opponent = get_average_by_opponent(team_wins, team_games)
-
-    avg_by_team_name = team_average_by_opponent.map do |key, value|
-      [get_team_name_by_id(key), value]
-    end.to_h
-
-    avg_by_team_name.sort.to_h
-  end
-
   def get_total_games_by_opponent(team_id)
     @games.collection.inject(Hash.new(0)) do |team_games, game|
       if game[1].home_team_id == team_id
@@ -70,11 +36,6 @@ module TeamStats
     end
   end
 
-  def team_info(team_id)
-    team = @teams.collection[team_id]
-    team_info_hash(team)
-  end
-
   def team_info_hash(team)
     {
       'team_id' => team.team_id,
@@ -83,16 +44,6 @@ module TeamStats
       'abbreviation' => team.abbreviation,
       'link' => team.link
     }
-  end
-
-  def average_win_percentage(team_id)
-    total_games = all_team_games(team_id)
-    wins = 0
-    total_games.each do |game|
-      the_result = game_win_loss_draw(game, team_id)
-      wins += the_result
-    end
-    team_total_win_percentage(total_games, wins)
   end
 
   def all_team_games(team_id)
@@ -122,66 +73,8 @@ module TeamStats
     (wins.to_f / total_games.size).round(2)
   end
 
-  def biggest_team_blowout(team_id)
-    total_games = all_team_games(team_id)
-    wins = total_games.reduce(Hash.new(0)) do |hash, game|
-      the_result = game_win_loss_draw(game, team_id)
-      goal_difference(hash, game) if the_result == 1
-      hash
-    end
-    wins.max_by { |_k, v| v }[1]
-  end
-
   def goal_difference(hash, game)
     hash[game[0]] = (game[1].home_goals.to_i - game[1].away_goals.to_i).abs
-  end
-
-  def most_goals_scored(team_id)
-    team_goals = []
-    @games.collection.each do |game|
-      if game.last.home_team_id == team_id
-        team_goals << game.last.home_goals.to_i
-      elsif game.last.away_team_id == team_id
-        team_goals << game.last.away_goals.to_i
-      end
-    end
-    team_goals.max
-  end
-
-  def fewest_goals_scored(team_id)
-    team_goals = []
-    @games.collection.each do |game|
-      if game.last.home_team_id == team_id
-        team_goals << game.last.home_goals.to_i
-      elsif game.last.away_team_id == team_id
-        team_goals << game.last.away_goals.to_i
-      end
-    end
-    team_goals.min
-  end
-
-  def worst_loss(team_id)
-    team_goal_diff = []
-    @games.collection.each do |game|
-      if game.last.home_team_id == team_id && game.last.home_goals < game.last.away_goals
-        team_goal_diff << game.last.away_goals.to_i - game.last.home_goals.to_i
-      elsif game.last.away_team_id == team_id && game.last.away_goals < game.last.home_goals
-        team_goal_diff << game.last.home_goals.to_i - game.last.away_goals.to_i
-      end
-    end
-    team_goal_diff.max
-  end
-
-  def best_season(team_id)
-    final_percentage = team_season_wins_hash(team_id)
-    answer = final_percentage.max_by{|season,win_percentage| win_percentage}
-    answer[0]
-  end
-
-  def worst_season(team_id)
-    final_percentage = team_season_wins_hash(team_id)
-    answer = final_percentage.min_by{|season,win_percentage| win_percentage}
-    answer[0]
   end
 
   def team_season_wins_hash(team_id)
@@ -203,28 +96,6 @@ module TeamStats
     percentage = ((wins.to_f / total_games) * 100).round(2)
     hash[:win_percentage] = percentage
     hash
-  end 
-  def seasonal_summary(team_id)
-    data = @games.collection.inject({}) do |seasons, game|
-      seasons[game[1].season] = {
-        postseason: {
-          win_percentage: team_postseason_win_percent(seasonal_wins_by_team(game[1].season, 'Postseason'))[team_id], # function
-          total_goals_scored: get_total_goals_scored(game[1].season, 'Postseason')[team_id],
-          total_goals_against: get_total_goals_against(game[1].season, 'Postseason')[team_id], # function
-          average_goals_scored: 0, # function
-          average_goals_against: 0 # function
-        },
-        regular_season: {
-          win_percentage: 0, # function
-          total_goals_scored: get_total_goals_scored(game[1].season, 'Regular Season')[team_id], # function
-          total_goals_against: get_total_goals_against(game[1].season, 'Regular Season')[team_id], # function
-          average_goals_scored: 0, # function
-          average_goals_against: 0 # function
-        }
-      }
-      seasons
-    end
-    require 'pry'; binding.pry
   end
 
   def get_total_goals_scored(season, type)
@@ -254,6 +125,7 @@ module TeamStats
       elsif game[1].season == season && game[1].type == type && game[1].away_goals.to_i > game[1].home_goals.to_i
         wins[game[1].home_team_id] += 1
       end
+      wins
     end
   end
 end
