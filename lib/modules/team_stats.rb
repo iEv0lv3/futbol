@@ -281,6 +281,7 @@ module TeamStats
       hash
     end
   end
+  
   def best_season(team_id)
     final_percentage = team_season_wins_hash(team_id)
     answer = final_percentage.max_by{|season,win_percentage| win_percentage}
@@ -306,7 +307,7 @@ module TeamStats
     percentage_seasons
   end
 
-  def team_season_win_percentage(hash, team_id)
+  def team_win_percentage_season(hash, team_id)
     total_games = (hash[:win] + hash[:loss] + hash[:draw])
     wins = hash[:win]
     percentage = ((wins.to_f / total_games) * 100).round(2)
