@@ -33,14 +33,6 @@ module Calculateable
     average_wins
   end
 
-  def team_postseason_win_percent(wins_hash)
-    average_wins = {}
-    wins_hash.each do |team, tot_wins|
-      average_wins[team] = (tot_wins.to_f / postseason_games_by_team[team])
-    end
-    average_wins
-  end
-
   def team_home_average_wins(wins_hash)
     average_wins = {}
     wins_hash.each do |team, tot_wins|

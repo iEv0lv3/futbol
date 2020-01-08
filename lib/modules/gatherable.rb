@@ -32,26 +32,6 @@ module Gatherable
     end
   end
 
-  def postseason_games_by_team
-    @games.collection.inject(Hash.new(0)) do |count, game|
-      if game[1].type == 'Postseason'
-        count[game[1].home_team_id] += 1
-        count[game[1].away_team_id] += 1
-      end
-      count
-    end
-  end
-
-  def regular_season_games_by_team
-    @games.collection.inject(Hash.new(0)) do |count, game|
-      if game[1].type == 'Regular Season'
-        count[game[1].home_team_id] += 1
-        count[game[1].away_team_id] += 1
-      end
-      count
-    end
-  end
-
   def games_by_season(season_id)
     @games.collection.inject(Hash.new(0)) do |count, game|
       if game[1].season == season_id

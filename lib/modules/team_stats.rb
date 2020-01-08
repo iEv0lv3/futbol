@@ -1,9 +1,11 @@
 require_relative './calculateable'
 require_relative './gatherable'
+require_relative './season_stats'
 
 module TeamStats
   include Calculateable
   include Gatherable
+  include SeasonStats
 
   def favorite_opponent(team_id)
     team_wins = get_wins_by_opponent(team_id)
@@ -168,5 +170,115 @@ module TeamStats
       end
     end
     team_goal_diff.max
+  end
+
+  def season_summary(team_id)
+    require 'pry'; binding.pry
+
+    # win percentage: post/reg
+    # total_goals_scored: post/reg
+    # total_goals_against: post_reg
+    # avg_goals_scored: post/reg
+    # avg_goals_against: post/reg
+    # general structure
+    #   'season_id' => {
+    #       :postseason => {
+    #           :win_percent => float
+    #           :total_goals_against => float
+    #       }
+    #    }
+    regular_record = team_regular_season_record(team_id, season_id)
+  end
+
+  def season_summary_win_percentage(hash, season_id)
+    total_games = (hash[season_id][:win] + hash[season_id][:loss] + hash[season_id][:draw])
+    wins = hash[season_id][:win]
+    percentage = ((wins.to_f / total_games) * 100).round(2)
+    hash[season_id][:win_percentage] = percentage
+    hash
+  end
+
+  def season_summary_regular_season_record(team_id)
+    @seasons.teams[team_id].reduce({}) do |hash, season|
+      next(hash) if season[1].nil?
+      season_id = season[0]
+      team_season = season[1].flatten
+      require 'pry'; binding.pry
+      hash[season[0]] = team_win_lose_draw_regular_season(team_id, team_season)
+      require 'pry'; binding.pry
+      season_summary_win_percentage(hash, season_id)
+      hash
+      require 'pry'; binding.pry
+    end
+  end
+
+  def team_win_lose_draw_regular_season(team_id, team_season)
+    record = { win: 0, loss: 0, draw: 0, regular_season_games: 0, win_percentage: 0, goals: 0, goals_against: 0 }
+    team_season.reduce({}) do |hash, game|
+      if team_id == game.home_team_id && (game.home_goals > game.away_goals) && game.type == 'Regular Season'
+        record[:win] += 1
+        record[:regular_season_games] += 1
+        record[:goals] += game.home_goals.to_i
+        record[:goals_against] += game.away_goals.to_i
+      elsif team_id == game.home_team_id && (game.home_goals < game.away_goals) && game.type == 'Regular Season'
+        record[:loss] += 1
+        record[:regular_season_games] += 1
+        record[:goals] += game.home_goals.to_i
+        record[:goals_against] += game.away_goals.to_i
+      elsif team_id == game.away_team_id && (game.away_goals > game.home_goals) && game.type == 'Regular Season'
+        record[:win] += 1
+        record[:regular_season_games] += 1
+        record[:goals] += game.away_goals.to_i
+        record[:goals_against] += game.home_goals.to_i
+      elsif team_id == game.away_team_id && (game.away_goals < game.home_goals) && game.type == 'Regular Season'
+        record[:loss] += 1
+        record[:regular_season_games] += 1
+        record[:goals] += game.away_goals.to_i
+        record[:goals_against] += game.home_goals.to_i
+      elsif game.home_goals == game.away_goals && game.type == 'Regular Season'
+        record[:draw] += 1
+        record[:regular_season_games] += 1
+        record[:goals] += game.away_goals.to_i if team_id == game.away_team_id
+        record[:goals] += game.home_goals.to_i if team_id == game.home_team_id
+      end
+      hash = record
+      hash
+    end
+  end
+
+  def season_summary_postseason_record(season_id)
+    @seasons.teams.reduce({}) do |hash, season|
+      next(hash) if season[1][season_id].nil?
+
+      team_id = season.first
+      team_season = season[1][season_id].flatten
+      hash[team_id] = team_win_lose_draw_postseason(season.first, team_season)
+      team_season_win_percentage(hash, team_id)
+      hash
+    end
+  end
+
+  def team_win_lose_draw_postseason(team_id, team_season)
+    record = { win: 0, loss: 0, draw: 0, postseason_games: 0, win_percentage: 0 }
+    team_season.reduce({}) do |hash, game|
+      if team_id == game.home_team_id && (game.home_goals > game.away_goals) && game.type == 'Postseason'
+        record[:win] += 1
+        record[:postseason_games] += 1
+      elsif team_id == game.home_team_id && (game.home_goals < game.away_goals) && game.type == 'Postseason'
+        record[:loss] += 1
+        record[:postseason_games] += 1
+      elsif team_id == game.away_team_id && (game.away_goals > game.home_goals) && game.type == 'Postseason'
+        record[:win] += 1
+        record[:postseason_games] += 1
+      elsif team_id == game.away_team_id && (game.away_goals < game.home_goals) && game.type == 'Postseason'
+        record[:loss] += 1
+        record[:postseason_games] += 1
+      elsif game.home_goals == game.away_goals && game.type == 'Postseason'
+        record[:draw] += 1
+        record[:postseason_games] += 1
+      end
+      hash = record
+      hash
+    end
   end
 end
