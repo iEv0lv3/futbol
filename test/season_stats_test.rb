@@ -42,6 +42,11 @@ class SeasonStatsTest < Minitest::Test
     assert_equal 'Sporting Kansas City', @stat_tracker.biggest_bust('20142015')
   end
 
+  def test_biggest_surprise
+    assert_equal 'FC Cincinnati', @stat_tracker.biggest_surprise('20132014')
+    assert_equal 'Minnesota United FC', @stat_tracker.biggest_surprise('20142015')
+  end
+
   def test_season_stats_can_get_winningest_coach
     assert_equal 'Claude Julien', @stat_tracker.winningest_coach('20132014')
     assert_equal 'Alain Vigneault', @stat_tracker.winningest_coach('20142015')
