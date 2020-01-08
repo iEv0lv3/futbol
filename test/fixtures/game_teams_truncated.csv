@@ -1,5 +1,10 @@
-game_id,team_id,HoA,result,settled_in,head_coach,goals,shots,tackles,pim,powerPlayOpportunities,powerPlayGoals,faceOffWinPercentage,giveaways,takeaways
+game_id,team_id,hoa,result,settled_in,head_coach,goals,shots,tackles,pim,powerPlayOpportunities,powerPlayGoals,faceOffWinPercentage,giveaways,takeaways
 2012030221,3,away,LOSS,OT,John Tortorella,2,8,44,8,3,0,44.8,17,7
-2012030221,6,home,WIN,OT,Claude Julien,3,12,51,6,4,1,55.2,4,5
-2012030222,3,away,LOSS,REG,John Tortorella,2,9,33,11,5,0,51.7,1,4
 2012030222,6,home,WIN,REG,Claude Julien,3,8,36,19,1,0,48.3,16,6
+2014030413,16,home,LOSS,REG,Joel Quenneville,2,9,27,6,2,1,58.2,14,9
+2015030134,15,away,LOSS,REG,Barry Trotz,1,8,38,4,2,0,51.8,11,9
+2015030221,15,home,LOSS,OT,Barry Trotz,2,8,43,6,4,0,45.9,8,5
+2016030136,10,home,LOSS,OT,Mike Babcock,1,9,45,6,1,0,63.9,18,12
+2017030145,4,away,TIE,REG,Dave Hakstol,2,6,48,19,1,0,37.7,8,4
+2013020203,4,away,WIN,REG,Craig Berube,1,5,12,10,5,0,60.7,0,5
+2014021170,10,away,TIE,SO,Peter Horachek,1,7,31,6,2,0,47.5,12,5

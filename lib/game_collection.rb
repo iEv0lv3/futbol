@@ -1,15 +1,12 @@
+require_relative 'game'
+require_relative 'collection'
+require_relative './modules/calculateable'
 require 'csv'
 
-class GameCollection
-  attr_accessor :games
-  attr_reader :games_file_path
+class GameCollection < Collection
+  include Calculateable
 
-  def initialize
-    @games = nil
-    @games_file_path = './data/games.csv'
-  end
-
-  def from_csv
-    @games = CSV.read(@games_file_path, headers: true, header_converters: :symbol)
+  def initialize(csv_file_path)
+    super(csv_file_path, Game)
   end
 end

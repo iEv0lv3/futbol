@@ -1,13 +1,17 @@
-class Teams
-  attr_reader :franchise_id,
+class Team
+  attr_reader :team_id,
+              :franchise_id,
               :team_name,
               :abbreviation,
-              :stadium
+              :stadium,
+              :link
 
-  def initialize(team_data)
-    @franchise_id = team_data[:franchiseId]
-    @team_name = team_data[:teamName]
-    @abbreviation = team_data[:abbreviation]
-    @stadium = team_data[:stadium]
+  def initialize(row)
+    @team_id = row[:team_id]
+    @franchise_id = row[:franchiseid]
+    @team_name = row[:teamname]
+    @abbreviation = row[:abbreviation]
+    @stadium = row[:stadium]
+    @link = row[:link]
   end
 end

@@ -1,32 +1,26 @@
-require 'simplecov'
-SimpleCov.start
-require 'minitest/autorun'
-require 'minitest/pride'
+require_relative './test_helper'
 require 'csv'
-require './lib/game_collection'
+require_relative '../lib/game_collection'
 
 class GameCollectionTest < Minitest::Test
-  def test_game_collection_exists
-    collection = GameCollection.new
-
-    assert_instance_of GameCollection, collection
+  def setup
+    @collection = GameCollection.new('./test/fixtures/games_truncated.csv')
+    @game = @collection.collection.first
   end
 
-  def test_game_collection_has_games_instance_variable
-    collection = GameCollection.new
-
-    assert_nil collection.games
+  def test_team_collection_exists
+    assert_instance_of GameCollection, @collection
   end
 
-  def test_file_path_locations
-    collection = GameCollection.new
-
-    assert_equal './data/games.csv', collection.games_file_path
+  def test_game_collection_has_games
+    assert_instance_of Hash, @collection.collection
+    assert_equal 13, @collection.collection.length
   end
 
-  def test_game_collection_can_have_csv_data_added
-    collection = GameCollection.new
-
-    refute_nil collection.from_csv
+  def test_game_collection_can_create_games_from_csv
+    assert_instance_of Array, @game
+    assert_equal 'Postseason', @game[1].type
+    assert_equal '20122013', @game[1].season
+    assert_equal '1', @game[1].away_goals
   end
 end
