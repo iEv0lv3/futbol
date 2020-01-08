@@ -199,8 +199,6 @@ class TeamStatsTest < Minitest::Test
                           total_goals_against: 159,
                           average_goals_scored: 2.17,
                           average_goals_against: 1.94 } } }
-                          
-    require 'pry'; binding.pry
 
     assert_equal expected, @stat_tracker.seasonal_summary('18')
   end
