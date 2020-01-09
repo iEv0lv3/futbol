@@ -215,4 +215,37 @@ class TeamStatsTest < Minitest::Test
     assert_instance_of Hash, @stat_tracker.seasonal_summary('18')
     assert_equal expected, @stat_tracker.seasonal_summary('18')
   end
+
+  def test_can_get_most_goals
+    assert_equal 6, @stat_tracker.most_goals_scored('6')
+  end
+
+  def test_can_get_fewest_goals
+    assert_equal 0, @stat_tracker.fewest_goals_scored('6')
+  end
+
+  def test_worst_loss
+    assert_equal 5, @stat_tracker.worst_loss('6')
+  end
+
+  def test_best_season
+    assert_equal "20142015", @stat_tracker.best_season('18')
+  end
+
+  def test_worst_season
+    assert_equal "20122013", @stat_tracker.worst_season('18')
+  end
+
+  def test_season_wins_hash
+    expected = {
+      "20162017"=>37.8,
+      "20172018"=>43.9,
+      "20132014"=>37.8,
+      "20122013"=>25.0,
+      "20142015"=>50.0,
+      "20152016"=>45.12
+    }
+
+    assert_equal expected, @stat_tracker.team_season_wins_hash('18')
+  end
 end
