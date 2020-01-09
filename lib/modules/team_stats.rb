@@ -136,7 +136,7 @@ module TeamStats
     hash[game[0]] = (game[1].home_goals.to_i - game[1].away_goals.to_i).abs
   end
 
-  def total_goals_by_team_id(team_id) # Helper
+  def total_goals_by_team_id(team_id)
     team_goals = @games.collection.map do |game|
       if game.last.home_team_id == team_id
         game.last.home_goals.to_i

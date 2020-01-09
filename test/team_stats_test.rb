@@ -219,4 +219,82 @@ class TeamStatsTest < Minitest::Test
     assert_instance_of Hash, @stat_tracker.seasonal_summary('18')
     assert_equal expected, @stat_tracker.seasonal_summary('18')
   end
+
+  def test_total_goals_by_team_id
+    assert_instance_of Array, @stat_tracker.total_goals_by_team_id('3')
+    assert_equal 531, @stat_tracker.total_goals_by_team_id('3').length
+
+    assert_instance_of Array, @stat_tracker.total_goals_by_team_id('18')
+    assert_equal 513, @stat_tracker.total_goals_by_team_id('18').length
+  end
+
+  def test_most_goals_scored
+    assert_instance_of Integer, @stat_tracker.most_goals_scored('3')
+    assert_equal 6, @stat_tracker.most_goals_scored('3')
+
+    assert_instance_of Integer, @stat_tracker.most_goals_scored('18')
+    assert_equal 7, @stat_tracker.most_goals_scored('18')
+  end
+
+  def test_fewest_goals_scored
+    assert_instance_of Integer, @stat_tracker.fewest_goals_scored('3')
+    assert_equal 0, @stat_tracker.fewest_goals_scored('3')
+
+    assert_instance_of Integer, @stat_tracker.fewest_goals_scored('18')
+    assert_equal 0, @stat_tracker.fewest_goals_scored('18')
+  end
+
+  def test_worst_loss
+    assert_instance_of Integer, @stat_tracker.worst_loss('3')
+    assert_equal 5, @stat_tracker.worst_loss('3')
+
+    assert_instance_of Integer, @stat_tracker.worst_loss('18')
+    assert_equal 4, @stat_tracker.worst_loss('18') 
+  end
+
+  def test_best_season
+    assert_instance_of String, @stat_tracker.best_season('3')
+    assert_equal "20142015", @stat_tracker.best_season('3')
+
+    assert_instance_of String, @stat_tracker.best_season('18')
+    assert_equal "20142015", @stat_tracker.best_season('18')
+  end
+
+  def test_worst_season
+    assert_instance_of String, @stat_tracker.worst_season('3')
+    assert_equal "20142015", @stat_tracker.best_season('3')
+
+    assert_instance_of String, @stat_tracker.worst_season('18')
+    assert_equal "20122013", @stat_tracker.worst_season('18')
+  end
+
+  def test_team_season_wins_hash
+    return_value_team_3 = { 
+                            "20122013" => 41.67, 
+                            "20152016" => 47.56, 
+                            "20142015" => 50.0, 
+                            "20132014" => 45.12, 
+                            "20172018" => 29.27, 
+                            "20162017" => 45.12
+                          }
+
+    assert_instance_of Hash, @stat_tracker.team_season_wins_hash('3')
+    assert_equal return_value_team_3, @stat_tracker.team_season_wins_hash('3')
+
+    return_value_team_18 = {
+                            "20162017" => 37.8,
+                            "20172018" => 43.9,
+                            "20132014" => 37.8,
+                            "20122013" => 25.0,
+                            "20142015" => 50.0,
+                            "20152016" => 45.12
+                          }
+
+    assert_instance_of Hash, @stat_tracker.team_season_wins_hash('18')
+    assert_equal return_value_team_18, @stat_tracker.team_season_wins_hash('18')    
+  end
+
+  def test_best_worst_win_percentage
+    # needs tests
+  end
 end
