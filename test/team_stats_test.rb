@@ -28,10 +28,12 @@ class TeamStatsTest < Minitest::Test
   end
 
   def test_team_stats_can_get_favorite_opponent
+    assert_instance_of String, @stat_tracker.favorite_opponent('18')
     assert_equal 'DC United', @stat_tracker.favorite_opponent('18')
   end
 
   def test_team_stats_can_get_rivals
+    assert_includes ['Orlando Pride', 'LA Galaxy'], @stat_tracker.rival('3')
     assert_includes ['Houston Dash', 'LA Galaxy'], @stat_tracker.rival('18')
   end
 
@@ -119,6 +121,7 @@ class TeamStatsTest < Minitest::Test
   end
 
   def test_average_win_percentage
+    assert_equal 0.43, @stat_tracker.average_win_percentage('3')
     assert_equal 0.49, @stat_tracker.average_win_percentage('6')
   end
 
@@ -129,6 +132,7 @@ class TeamStatsTest < Minitest::Test
   end
 
   def test_team_biggest_blowout
+    assert_equal 4, @stat_tracker.biggest_team_blowout('3')
     assert_equal 5, @stat_tracker.biggest_team_blowout('18')
   end
 
@@ -153,7 +157,7 @@ class TeamStatsTest < Minitest::Test
          :total_goals_against => 28,
          :average_goals_scored => 2.23,
          :average_goals_against => 2.15 },
-       :regular_season => 
+       :regular_season =>
         {:win_percentage => 0.44,
          :total_goals_scored => 187,
          :total_goals_against => 162,
@@ -205,7 +209,7 @@ class TeamStatsTest < Minitest::Test
          :total_goals_against => 33,
          :average_goals_scored => 1.79,
          :average_goals_against => 2.36 },
-       :regular_season => 
+       :regular_season =>
         {:win_percentage => 0.45,
          :total_goals_scored => 178,
          :total_goals_against => 159,

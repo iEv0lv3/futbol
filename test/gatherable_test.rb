@@ -48,7 +48,6 @@ class GatherableTest < Minitest::Test
 
   def test_gatherable_can_return_wins_by_team
     # assert_instance_of Hash, @stat_tracker.wins_by_team(collection)
-  require 'pry'; binding.pry
   end
 
   def test_gatherable_can_return_postseason_games_by_team
