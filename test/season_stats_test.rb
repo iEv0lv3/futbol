@@ -11,6 +11,7 @@ require './lib/game_collection'
 require './lib/team_collection'
 require './lib/game_teams_collection'
 require './lib/season_collection'
+
 class SeasonStatsTest < Minitest::Test
   def setup
     game_path = './data/games.csv'
