@@ -15,7 +15,7 @@ module TeamStats
     team_ident = team_average_by_opponent.max_by { |_opp_team, percent| percent }[0]
     team_name = get_team_name_by_id(team_ident)
 
-    return team_name
+    team_name
   end
 
   def rival(team_id)
@@ -26,7 +26,7 @@ module TeamStats
     team_ident = team_average_by_opponent.min_by { |_opp_team, percent| percent }[0]
     team_name = get_team_name_by_id(team_ident)
 
-    return team_name
+    team_name
   end
 
   def head_to_head(team_id)
@@ -357,7 +357,6 @@ module TeamStats
   def team_season_wins_hash(team_id)
     percentage_seasons = Hash.new(0)
     @seasons.teams[team_id].each do |season|
-
       season_key = season[0]
       team_season = season[1].flatten
       stats = win_lose_draw_regular_season(team_id, team_season)

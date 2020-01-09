@@ -21,8 +21,8 @@ module Gatherable
     end
   end
 
-  def wins_by_team(collection)
-    collection.inject(Hash.new(0)) do |wins, game|
+  def wins_by_team
+    @games.collection.inject(Hash.new(0)) do |wins, game|
       if game[1].home_goals.to_i > game[1].away_goals.to_i
         wins[game[1].home_team_id] += 1
       elsif game[1].away_goals.to_i > game[1].home_goals.to_i

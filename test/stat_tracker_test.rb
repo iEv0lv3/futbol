@@ -192,7 +192,7 @@ class StatTrackerTest < Minitest::Test
 
   def test_stat_tracker_can_get_worst_loss
     assert_instance_of Integer, @stat_tracker.worst_loss('18')
-    assert_equal 4, @stat_tracker.worst_loss('18')   
+    assert_equal 4, @stat_tracker.worst_loss('18')
   end
 
   def test_stat_tracker_can_get_most_tackles
