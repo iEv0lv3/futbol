@@ -41,7 +41,7 @@ class LeagueStatsTest < Minitest::Test
     assert_instance_of String, @stat_tracker.worst_offense
     assert_equal 'Utah Royals FC', @stat_tracker.worst_offense
   end
-  
+
   def test_stat_tracker_can_get_best_defense
     assert_instance_of String, @stat_tracker.best_defense
     assert_equal 'FC Cincinnati', @stat_tracker.best_defense
