@@ -133,7 +133,6 @@ class TeamStatsTest < Minitest::Test
   end
 
   def test_season_summary_results
-    require 'pry'; binding.pry
     expected = { '20162017' =>
       {:postseason =>
         {:win_percentage => 0.59,
