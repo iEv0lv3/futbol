@@ -5,34 +5,6 @@ module SeasonStats
   include Calculateable
   include Gatherable
 
-  def most_accurate_team(season_id)
-    get_team_name_by_id(divide_shots_by_goals(team_shots_hash(season_id), season_id).min_by { |_id, accuracy| accuracy}[0])
-  end
-
-  def least_accurate_team(season_id)
-    get_team_name_by_id(divide_shots_by_goals(team_shots_hash(season_id), season_id).max_by { |_id, accuracy| accuracy}[0])
-  end
-
-  def total_tackles_by_team_per_season(season_id) 
-    @games.collection.inject(Hash.new(0)) do |team_tackles, game|
-      if game[1].season == season_id
-        team_tackles[game.last.home_team_id.to_s] += game.last.home_tackles.to_i
-        team_tackles[game.last.away_team_id.to_s] += game.last.away_tackles.to_i
-      end
-      team_tackles
-    end
-  end
-
-  def most_tackles(season_id)
-    team_id = total_tackles_by_team_per_season(season_id).max_by { |_team, tackles| tackles }
-    get_team_name_by_id(team_id.first)
-  end
-
-  def fewest_tackles(season_id)
-    team_id = total_tackles_by_team_per_season(season_id).min_by { |_team, tackles| tackles }
-    get_team_name_by_id(team_id.first)
-  end
-
   def biggest_bust(season_id)
     regular = team_regular_season_record(season_id)
     post = team_postseason_record(season_id)
@@ -55,6 +27,34 @@ module SeasonStats
 
   def worst_coach(season_id)
     season_coach_win_percent(season_wins_by_coach(season_id), season_id).compact.min_by { |_id, avg| avg }[0]
+  end
+
+  def most_accurate_team(season_id)
+    get_team_name_by_id(divide_shots_by_goals(team_shots_hash(season_id), season_id).min_by { |_id, accuracy| accuracy}[0])
+  end
+
+  def least_accurate_team(season_id)
+    get_team_name_by_id(divide_shots_by_goals(team_shots_hash(season_id), season_id).max_by { |_id, accuracy| accuracy}[0])
+  end
+
+  def most_tackles(season_id)
+    team_id = total_tackles_by_team_per_season(season_id).max_by { |_team, tackles| tackles }
+    get_team_name_by_id(team_id.first)
+  end
+
+  def fewest_tackles(season_id)
+    team_id = total_tackles_by_team_per_season(season_id).min_by { |_team, tackles| tackles }
+    get_team_name_by_id(team_id.first)
+  end
+
+  def total_tackles_by_team_per_season(season_id)
+    @games.collection.inject(Hash.new(0)) do |team_tackles, game|
+      if game[1].season == season_id
+        team_tackles[game.last.home_team_id.to_s] += game.last.home_tackles.to_i
+        team_tackles[game.last.away_team_id.to_s] += game.last.away_tackles.to_i
+      end
+      team_tackles
+    end
   end
 
   def total_season_games_team_id(season_id)
