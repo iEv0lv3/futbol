@@ -15,7 +15,7 @@ module TeamStats
     team_ident = team_average_by_opponent.max_by { |_opp_team, percent| percent }[0]
     team_name = get_team_name_by_id(team_ident)
 
-    return team_name
+    team_name
   end
 
   def rival(team_id)
@@ -26,7 +26,7 @@ module TeamStats
     team_ident = team_average_by_opponent.min_by { |_opp_team, percent| percent }[0]
     team_name = get_team_name_by_id(team_ident)
 
-    return team_name
+    team_name
   end
 
   def head_to_head(team_id)
