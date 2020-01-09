@@ -1,4 +1,8 @@
+require_relative 'calculateable'
+
 module Gatherable
+  include Calculateable
+
   def games_by_team
     @games.collection.inject(Hash.new(0)) do |count, game|
       count[game[1].home_team_id] += 1
