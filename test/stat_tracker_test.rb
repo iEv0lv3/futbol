@@ -14,13 +14,6 @@ require './lib/season_collection'
 
 class StatTrackerTest < Minitest::Test
   def setup
-    game_path = './test/fixtures/games_truncated.csv'
-    team_path = './data/teams.csv'
-    game_team_path = './test/fixtures/game_teams_truncated.csv'
-    games = GameCollection.new(game_path)
-    teams = TeamCollection.new(team_path)
-    game_team = GameTeamCollection.new(game_team_path)
-    @new_tracker = StatTracker.new(games, teams)
     game_path = './data/games.csv'
     team_path = './data/teams.csv'
     game_teams_path = './data/game_teams.csv'
@@ -139,8 +132,8 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_count_of_teams
-    assert_instance_of Integer, @new_tracker.count_of_teams
-    assert_equal 32, @new_tracker.count_of_teams
+    assert_instance_of Integer, @stat_tracker.count_of_teams
+    assert_equal 32, @stat_tracker.count_of_teams
   end
   
   def test_stat_tracker_can_get_best_defense
@@ -199,7 +192,7 @@ class StatTrackerTest < Minitest::Test
 
   def test_stat_tracker_can_get_worst_loss
     assert_instance_of Integer, @stat_tracker.worst_loss('18')
-    assert_equal 4, @stat_tracker.worst_loss('18')   
+    assert_equal 4, @stat_tracker.worst_loss('18')
   end
 
   def test_stat_tracker_can_get_most_tackles

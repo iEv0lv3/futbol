@@ -6,14 +6,14 @@ module SeasonStats
   include Gatherable
 
   def most_accurate_team(season_id)
-    get_team_name_by_id(divide_shots_by_goals(team_shots_hash(season_id), season_id).min_by { |_id, accuracy| accuracy}[0])
+    get_team_name_by_id(divide_shots_by_goals(team_shots_hash(season_id), season_id).min_by { |_id, accuracy| accuracy }[0])
   end
 
   def least_accurate_team(season_id)
-    get_team_name_by_id(divide_shots_by_goals(team_shots_hash(season_id), season_id).max_by { |_id, accuracy| accuracy}[0])
+    get_team_name_by_id(divide_shots_by_goals(team_shots_hash(season_id), season_id).max_by { |_id, accuracy| accuracy }[0])
   end
 
-  def total_tackles_by_team_per_season(season_id) 
+  def total_tackles_by_team_per_season(season_id)
     @games.collection.inject(Hash.new(0)) do |team_tackles, game|
       if game[1].season == season_id
         team_tackles[game.last.home_team_id.to_s] += game.last.home_tackles.to_i
