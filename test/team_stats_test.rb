@@ -134,83 +134,71 @@ class TeamStatsTest < Minitest::Test
 
   def test_season_summary_results
     expected = { '20162017' =>
-      {:postseason =>
-        {:win_percentage => 0.59,
-         :total_goals_scored => 48,
-         :total_goals_against => 40,
-         :average_goals_scored => 2.18,
-         :average_goals_against => 1.82 },
-       :regular_season =>
-        {:win_percentage => 0.38,
-         :total_goals_scored => 180,
-         :total_goals_against => 170,
-         :average_goals_scored => 2.2,
-         :average_goals_against => 2.07 }},
-     '20172018' =>
-      {:postseason =>
-        {:win_percentage => 0.54,
-         :total_goals_scored => 29,
-         :total_goals_against => 28,
-         :average_goals_scored => 2.23,
-         :average_goals_against => 2.15 },
-       :regular_season => 
-        {:win_percentage => 0.44,
-         :total_goals_scored => 187,
-         :total_goals_against => 162,
-         :average_goals_scored => 2.28,
-         :average_goals_against => 1.98 }},
-     '20132014' =>
-      {:postseason =>
-        {:win_percentage => 0.0,
-         :total_goals_scored => 0,
-         :total_goals_against => 0,
-         :average_goals_scored => 0.0,
-         :average_goals_against => 0.0 },
-       :regular_season =>
-        {:win_percentage => 0.38,
-         :total_goals_scored => 166,
-         :total_goals_against => 177,
-         :average_goals_scored => 2.02,
-         :average_goals_against => 2.16 }},
-     '20122013' =>
-      {:postseason =>
-        {:win_percentage => 0.0,
-         :total_goals_scored => 0,
-         :total_goals_against => 0,
-         :average_goals_scored => 0.0,
-         :average_goals_against => 0.0 },
-       :regular_season =>
-        {:win_percentage => 0.25,
-         :total_goals_scored => 85,
-         :total_goals_against => 103,
-         :average_goals_scored => 1.77,
-         :average_goals_against => 2.15 }},
-     '20142015' =>
-      {:postseason =>
-        {:win_percentage => 0.67,
-         :total_goals_scored => 17,
-         :total_goals_against => 13,
-         :average_goals_scored => 2.83,
-         :average_goals_against => 2.17},
-       :regular_season =>
-        {:win_percentage => 0.5,
-         :total_goals_scored => 186,
-         :total_goals_against => 162,
-         :average_goals_scored => 2.27,
-         :average_goals_against => 1.98 }},
-     '20152016' =>
-      {:postseason =>
-        {:win_percentage => 0.36,
-         :total_goals_scored => 25,
-         :total_goals_against => 33,
-         :average_goals_scored => 1.79,
-         :average_goals_against => 2.36 },
-       :regular_season => 
-        {:win_percentage => 0.45,
-         :total_goals_scored => 178,
-         :total_goals_against => 159,
-         :average_goals_scored => 2.17,
-         :average_goals_against => 1.94 }}}
+      { postseason: { win_percentage: 0.59,
+                      total_goals_scored: 48,
+                      total_goals_against: 40,
+                      average_goals_scored: 2.18,
+                      average_goals_against: 1.82 },
+        regular_season: { win_percentage: 0.38,
+                          total_goals_scored: 180,
+                          total_goals_against: 170,
+                          average_goals_scored: 2.2,
+                          average_goals_against: 2.07 } },
+                 '20172018' =>
+      { postseason: { win_percentage: 0.54,
+                      total_goals_scored: 29,
+                      total_goals_against: 28,
+                      average_goals_scored: 2.23,
+                      average_goals_against: 2.15 },
+        regular_season: { win_percentage: 0.44,
+                          total_goals_scored: 187,
+                          total_goals_against: 162,
+                          average_goals_scored: 2.28,
+                          average_goals_against: 1.98 } },
+                 '20132014' =>
+      { postseason: { win_percentage: 0.0,
+                      total_goals_scored: 0,
+                      total_goals_against: 0,
+                      average_goals_scored: 0.0,
+                      average_goals_against: 0.0 },
+        regular_season: { win_percentage: 0.38,
+                          total_goals_scored: 166,
+                          total_goals_against: 177,
+                          average_goals_scored: 2.02,
+                          average_goals_against: 2.16 } },
+                 '20122013' =>
+      { postseason: { win_percentage: 0.0,
+                      total_goals_scored: 0,
+                      total_goals_against: 0,
+                      average_goals_scored: 0.0,
+                      average_goals_against: 0.0 },
+        regular_season: { win_percentage: 0.25,
+                          total_goals_scored: 85,
+                          total_goals_against: 103,
+                          average_goals_scored: 1.77,
+                          average_goals_against: 2.15 } },
+                 '20142015' =>
+      { postseason: { win_percentage: 0.67,
+                      total_goals_scored: 17,
+                      total_goals_against: 13,
+                      average_goals_scored: 2.83,
+                      average_goals_against: 2.17 },
+        regular_season: { win_percentage: 0.5,
+                          total_goals_scored: 186,
+                          total_goals_against: 162,
+                          average_goals_scored: 2.27,
+                          average_goals_against: 1.98 } },
+                 '20152016' =>
+      { postseason: { win_percentage: 0.36,
+                      total_goals_scored: 25,
+                      total_goals_against: 33,
+                      average_goals_scored: 1.79,
+                      average_goals_against: 2.36 },
+        regular_season: { win_percentage: 0.45,
+                          total_goals_scored: 178,
+                          total_goals_against: 159,
+                          average_goals_scored: 2.17,
+                          average_goals_against: 1.94 } } }
 
     assert_instance_of Hash, @stat_tracker.seasonal_summary('18')
     assert_equal expected, @stat_tracker.seasonal_summary('18')
@@ -229,21 +217,21 @@ class TeamStatsTest < Minitest::Test
   end
 
   def test_best_season
-    assert_equal "20142015", @stat_tracker.best_season('18')
+    assert_equal '20142015', @stat_tracker.best_season('18')
   end
 
   def test_worst_season
-    assert_equal "20122013", @stat_tracker.worst_season('18')
+    assert_equal '20122013', @stat_tracker.worst_season('18')
   end
 
   def test_season_wins_hash
     expected = {
-      "20162017"=>37.8,
-      "20172018"=>43.9,
-      "20132014"=>37.8,
-      "20122013"=>25.0,
-      "20142015"=>50.0,
-      "20152016"=>45.12
+      '20162017' => 37.8,
+      '20172018' => 43.9,
+      '20132014' => 37.8,
+      '20122013' => 25.0,
+      '20142015' => 50.0,
+      '20152016' => 45.12
     }
 
     assert_equal expected, @stat_tracker.team_season_wins_hash('18')

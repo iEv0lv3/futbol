@@ -24,11 +24,11 @@ module Calculateable
   def season_coach_win_percent(wins_hash, season_id)
     average_wins = {}
     wins_hash.each do |coach, tot_wins|
-      if season_games_by_coach(season_id)[coach] == 0
-        average_wins[coach] = nil
-      else
-        average_wins[coach] = (tot_wins.to_f / season_games_by_coach(season_id)[coach])
-      end
+      average_wins[coach] = if season_games_by_coach(season_id)[coach] == 0
+                              nil
+                            else
+                              (tot_wins.to_f / season_games_by_coach(season_id)[coach])
+                            end
     end
     average_wins
   end
@@ -95,7 +95,7 @@ module Calculateable
     shots_hash.each do |team_id, tot_shots|
       team_accuracy[team_id] = tot_shots.to_f / team_goals_hash(season_id)[team_id]
     end
-  
+
     team_accuracy
   end
 end

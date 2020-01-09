@@ -54,6 +54,6 @@ class SeasonStatsTest < Minitest::Test
 
   def test_season_stats_can_get_worst_coach
     assert_equal 'Peter Laviolette', @stat_tracker.worst_coach('20132014')
-    assert_includes ['Ted Nolan','Craig MacTavish'], @stat_tracker.worst_coach('20142015')
+    assert_includes ['Ted Nolan', 'Craig MacTavish'], @stat_tracker.worst_coach('20142015')
   end
 end

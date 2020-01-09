@@ -29,46 +29,46 @@ class CalculateableTest < Minitest::Test
   end
 
   def test_calculateable_team_average_goals
-    test_hash = {'18' => 0.71}
+    test_hash = { '18' => 0.71 }
 
     assert_instance_of Hash, @stat_tracker.team_average_goals(test_hash)
   end
 
   def test_calculateable_can_return_team_win_percentage
-    test_hash = {'18' => 0.71}
+    test_hash = { '18' => 0.71 }
 
     assert_instance_of Hash, @stat_tracker.team_win_percentage(test_hash)
   end
 
   def test_calculateable_can_return_season_coach_win_percent
-    test_hash = {'18' => 0.71}
-    coach_hash = {'John Tortorella' => 100}
+    test_hash = { '18' => 0.71 }
+    coach_hash = { 'John Tortorella' => 100 }
 
     assert_instance_of Hash, @stat_tracker.season_coach_win_percent(test_hash, '20132014')
     assert_instance_of Hash, @stat_tracker.season_coach_win_percent(coach_hash, '20132014')
   end
 
   def test_calculateable_can_return_team_away_average_wins
-    test_hash = {'18' => 0.71}
+    test_hash = { '18' => 0.71 }
 
     assert_instance_of Hash, @stat_tracker.team_away_average_wins(test_hash)
   end
 
   def test_calculateable_can_return_combine_game_data
     assert_instance_of Hash, @stat_tracker.combine_game_data
-    assert_equal 14882, @stat_tracker.combine_game_data.size
+    assert_equal 14_882, @stat_tracker.combine_game_data.size
   end
 
   def test_calculateable_league_win_percent_diff
-    home_hash = {'18' => 0.71}
-    team_hash = {'18' => 0.71}
+    home_hash = { '18' => 0.71 }
+    team_hash = { '18' => 0.71 }
 
     assert_instance_of Hash, @stat_tracker.league_win_percent_diff(home_hash, team_hash)
   end
 
   def test_calculateable_worst_team_help
-    home_hash = {'18' => 0.71}
-    team_hash = {'18' => 0.81}
+    home_hash = { '18' => 0.71 }
+    team_hash = { '18' => 0.81 }
 
     assert_instance_of Hash, @stat_tracker.worst_team_helper(home_hash, team_hash)
   end
@@ -88,7 +88,7 @@ class CalculateableTest < Minitest::Test
   end
 
   def test_calculateable_can_divide_shots_by_goals
-    shots_hash = {'18' => 100}
+    shots_hash = { '18' => 100 }
 
     assert_instance_of Hash, @stat_tracker.divide_shots_by_goals(shots_hash, '20142015')
   end
