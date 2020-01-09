@@ -57,13 +57,6 @@ module SeasonStats
     season_coach_win_percent(season_wins_by_coach(season_id), season_id).compact.min_by { |_id, avg| avg }[0]
   end
 
-  def total_season_games_team_id(season_id)
-    @seasons.teams.reduce({}) do |hash, season|
-      hash[season.first] = season[1][season_id].size
-      hash
-    end
-  end
-
   def team_season_record(season_id)
     @seasons.teams.reduce({}) do |hash, season|
       team_id = season.first
@@ -80,35 +73,6 @@ module SeasonStats
     percentage = ((wins.to_f / total_games) * 100).round(2)
     hash[team_id][:win_percentage] = percentage
     hash
-  end
-
-  def win_lose_draw(team_id, team_season)
-    record = { win: 0, loss: 0, draw: 0, regular_season_games: 0, postseason_games: 0, win_percentage: 0 }
-    team_season.reduce({}) do |hash, game|
-      if team_id == game.home_team_id && (game.home_goals > game.away_goals)
-        record[:win] += 1
-        record[:regular_season_games] += 1 if game.type == 'Regular Season'
-        record[:postseason_games] += 1 if game.type == 'Postseason'
-      elsif team_id == game.home_team_id && (game.home_goals < game.away_goals)
-        record[:loss] += 1
-        record[:regular_season_games] += 1 if game.type == 'Regular Season'
-        record[:postseason_games] += 1 if game.type == 'Postseason'
-      elsif team_id == game.away_team_id && (game.away_goals > game.home_goals)
-        record[:win] += 1
-        record[:regular_season_games] += 1 if game.type == 'Regular Season'
-        record[:postseason_games] += 1 if game.type == 'Postseason'
-      elsif team_id == game.away_team_id && (game.away_goals < game.home_goals)
-        record[:loss] += 1
-        record[:regular_season_games] += 1 if game.type == 'Regular Season'
-        record[:postseason_games] += 1 if game.type == 'Postseason'
-      elsif game.home_goals == game.away_goals
-        record[:draw] += 1
-        record[:regular_season_games] += 1 if game.type == 'Regular Season'
-        record[:postseason_games] += 1 if game.type == 'Postseason'
-      end
-      hash = record
-      hash
-    end
   end
 
   def team_regular_season_record(season_id)
