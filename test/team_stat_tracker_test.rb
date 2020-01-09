@@ -14,7 +14,7 @@ require './lib/season_collection'
 
 class TeamStatTrackerTest < Minitest::Test
 
-def setup
+  def setup
     game_path = './data/games.csv'
     team_path = './data/teams.csv'
     game_teams_path = './data/game_teams.csv'

@@ -17,8 +17,6 @@ class GameTeamsCollectionTest < Minitest::Test
   def test_file_path_location
     game_teams_path = './data/game_teams.csv'
 
-    collection = GameTeamsCollection.new(game_teams_path)
-
     assert_equal './data/game_teams.csv', game_teams_path
   end
 
