@@ -15,7 +15,7 @@ module TeamStats
     team_ident = team_average_by_opponent.max_by { |_opp_team, percent| percent }[0]
     team_name = get_team_name_by_id(team_ident)
 
-    team_name
+    return team_name
   end
 
   def rival(team_id)
@@ -26,7 +26,7 @@ module TeamStats
     team_ident = team_average_by_opponent.min_by { |_opp_team, percent| percent }[0]
     team_name = get_team_name_by_id(team_ident)
 
-    team_name
+    return team_name
   end
 
   def head_to_head(team_id)
@@ -75,16 +75,6 @@ module TeamStats
     team_info_hash(team)
   end
 
-  def team_info_hash(team)
-    {
-      'team_id' => team.team_id,
-      'franchise_id' => team.franchise_id,
-      'team_name' => team.team_name,
-      'abbreviation' => team.abbreviation,
-      'link' => team.link
-    }
-  end
-
   def average_win_percentage(team_id)
     total_games = all_team_games(team_id)
     wins = 0
@@ -95,33 +85,6 @@ module TeamStats
     team_total_win_percentage(total_games, wins)
   end
 
-  def all_team_games(team_id)
-    @games.collection.find_all do |game|
-      game[1].home_team_id == team_id || game[1].away_team_id == team_id
-    end
-  end
-
-  def game_win_loss_draw(game, team_id)
-    hoa = team_id_home_or_away(game, team_id)
-    result = game[1].home_goals <=> game[1].away_goals
-    if result == -1 && hoa == 'away'
-      1
-    elsif result == 1 && hoa == 'home'
-      1
-    else
-      0
-    end
-  end
-
-  def team_id_home_or_away(game, team_id)
-    return 'home' if game[1].home_team_id == team_id
-    return 'away' if game[1].away_team_id == team_id
-  end
-
-  def team_total_win_percentage(total_games, wins)
-    (wins.to_f / total_games.size).round(2)
-  end
-
   def biggest_team_blowout(team_id)
     total_games = all_team_games(team_id)
     wins = total_games.reduce(Hash.new(0)) do |hash, game|
@@ -130,10 +93,6 @@ module TeamStats
       hash
     end
     wins.max_by { |_k, v| v }[1]
-  end
-
-  def goal_difference(hash, game)
-    hash[game[0]] = (game[1].home_goals.to_i - game[1].away_goals.to_i).abs
   end
 
   def most_goals_scored(team_id)
@@ -172,174 +131,22 @@ module TeamStats
     team_goal_diff.max
   end
 
-  def seasonal_summary(team_id)
-    reg_season = season_summary_regular_season_record(team_id)
+  def season_summary(team_id)
+    require 'pry'; binding.pry
 
-    regular_summary = reg_season.inject(Hash.new(Hash.new(0.0))) do |hash, record|
-      hash[record[0]] = {
-        regular_season: {
-          win_percentage: record[1][:win_percentage],
-          total_goals_scored: record[1][:goals],
-          total_goals_against: record[1][:goals_against],
-          average_goals_scored: record[1][:goals_scored_percentage],
-          average_goals_against: record[1][:goals_against_percentage]
-        }
-      }
-      hash
-    end
-
-    post_season = season_summary_postseason_record(team_id)
-    post_summary = post_season.inject(Hash.new(Hash.new(0.0))) do |hash, record|
-      hash[record[0]] = {
-        postseason: {
-          win_percentage: record[1][:win_percentage],
-          total_goals_scored: record[1][:goals],
-          total_goals_against: record[1][:goals_against],
-          average_goals_scored: record[1][:goals_scored_percentage],
-          average_goals_against: record[1][:goals_against_percentage]
-        }
-      }
-      hash
-    end
-
-    post_summary.merge(regular_summary) { |_season, post, reg| post.merge(reg) }
-  end
-
-  def season_summary_win_percentage(hash, season_id)
-    total_games = (hash[season_id][:win] + hash[season_id][:loss] + hash[season_id][:draw])
-    wins = hash[season_id][:win]
-    percentage = ((wins.to_f / total_games)).round(2)
-
-    if percentage.nan?
-      hash[season_id][:win_percentage] = 0.0
-    else
-      hash[season_id][:win_percentage] = percentage
-    end
-    hash
-  end
-
-  def season_summary_goals_percentage(hash, season_id)
-    total_games = (hash[season_id][:win] + hash[season_id][:loss] + hash[season_id][:draw])
-    goals = hash[season_id][:goals]
-    percentage = ((goals.to_f / total_games)).round(2)
-
-    if percentage.nan?
-      hash[season_id][:goals_scored_percentage] = 0.0
-    else
-      (hash[season_id][:goals_scored_percentage] = percentage)
-    end
-    hash
-  end
-
-  def season_summary_goals_against_percentage(hash, season_id)
-    total_games = (hash[season_id][:win] + hash[season_id][:loss] + hash[season_id][:draw])
-    goals = hash[season_id][:goals_against]
-    percentage = ((goals.to_f / total_games)).round(2)
-
-    if percentage.nan?
-      hash[season_id][:goals_against_percentage] = 0.0
-    else
-      (hash[season_id][:goals_against_percentage] = percentage)
-    end
-    hash
-  end
-
-  def season_summary_regular_season_record(team_id)
-    @seasons.teams[team_id].reduce({}) do |hash, season|
-      next(hash) if season[1].nil?
-      season_id = season[0]
-      team_season = season[1].flatten
-      hash[season[0]] = team_win_lose_draw_regular_season(team_id, team_season)
-      season_summary_win_percentage(hash, season_id)
-      season_summary_goals_percentage(hash, season_id)
-      season_summary_goals_against_percentage(hash, season_id)
-      hash
-    end
-  end
-
-  def season_summary_postseason_record(team_id)
-    @seasons.teams[team_id].reduce({}) do |hash, season|
-      next(hash) if season[1].nil?
-      season_id = season[0]
-      team_season = season[1].flatten
-      hash[season[0]] = team_win_lose_draw_postseason(team_id, team_season)
-      season_summary_win_percentage(hash, season_id)
-      season_summary_goals_percentage(hash, season_id)
-      season_summary_goals_against_percentage(hash, season_id)
-      hash
-    end
-  end
-
-  def team_win_lose_draw_regular_season(team_id, team_season)
-    record = { win: 0, loss: 0, draw: 0, regular_season_games: 0, win_percentage: 0, goals: 0, goals_against: 0 }
-    team_season.reduce({}) do |hash, game|
-      if team_id == game.home_team_id && (game.home_goals > game.away_goals) && game.type == 'Regular Season'
-        record[:win] += 1
-        record[:regular_season_games] += 1
-        record[:goals] += game.home_goals.to_i
-        record[:goals_against] += game.away_goals.to_i
-      elsif team_id == game.home_team_id && (game.home_goals < game.away_goals) && game.type == 'Regular Season'
-        record[:loss] += 1
-        record[:regular_season_games] += 1
-        record[:goals] += game.home_goals.to_i
-        record[:goals_against] += game.away_goals.to_i
-      elsif team_id == game.away_team_id && (game.away_goals > game.home_goals) && game.type == 'Regular Season'
-        record[:win] += 1
-        record[:regular_season_games] += 1
-        record[:goals] += game.away_goals.to_i
-        record[:goals_against] += game.home_goals.to_i
-      elsif team_id == game.away_team_id && (game.away_goals < game.home_goals) && game.type == 'Regular Season'
-        record[:loss] += 1
-        record[:regular_season_games] += 1
-        record[:goals] += game.away_goals.to_i
-        record[:goals_against] += game.home_goals.to_i
-      elsif game.home_goals == game.away_goals && game.type == 'Regular Season'
-        record[:draw] += 1
-        record[:regular_season_games] += 1
-        record[:goals] += game.away_goals.to_i if team_id == game.away_team_id
-        record[:goals] += game.home_goals.to_i if team_id == game.home_team_id
-        record[:goals_against] += game.away_goals.to_i if team_id == game.home_team_id
-        record[:goals_against] += game.home_goals.to_i if team_id == game.away_team_id
-      end
-      hash = record
-      hash
-    end
-  end
-
-  def team_win_lose_draw_postseason(team_id, team_season)
-    record = { win: 0, loss: 0, draw: 0, postseason_games: 0, win_percentage: 0.0, goals: 0, goals_against: 0 }
-    team_season.reduce({}) do |hash, game|
-      if team_id == game.home_team_id && (game.home_goals > game.away_goals) && game.type == 'Postseason'
-        record[:win] += 1
-        record[:postseason_games] += 1
-        record[:goals] += game.home_goals.to_i
-        record[:goals_against] += game.away_goals.to_i
-      elsif team_id == game.home_team_id && (game.home_goals < game.away_goals) && game.type == 'Postseason'
-        record[:loss] += 1
-        record[:postseason_games] += 1
-        record[:goals] += game.home_goals.to_i
-        record[:goals_against] += game.away_goals.to_i
-      elsif team_id == game.away_team_id && (game.away_goals > game.home_goals) && game.type == 'Postseason'
-        record[:win] += 1
-        record[:postseason_games] += 1
-        record[:goals] += game.away_goals.to_i
-        record[:goals_against] += game.home_goals.to_i
-      elsif team_id == game.away_team_id && (game.away_goals < game.home_goals) && game.type == 'Postseason'
-        record[:loss] += 1
-        record[:postseason_games] += 1
-        record[:goals] += game.away_goals.to_i
-        record[:goals_against] += game.home_goals.to_i
-      elsif game.home_goals == game.away_goals && game.type == 'Postseason'
-        record[:draw] += 1
-        record[:postseason_games] += 1
-        record[:goals] += game.away_goals.to_i if team_id == game.away_team_id
-        record[:goals] += game.home_goals.to_i if team_id == game.home_team_id
-        record[:goals_against] += game.away_goals.to_i if team_id == game.home_team_id
-        record[:goals_against] += game.home_goals.to_i if team_id == game.away_team_id
-      end
-      hash = record
-      hash
-    end
+    # win percentage: post/reg
+    # total_goals_scored: post/reg
+    # total_goals_against: post_reg
+    # avg_goals_scored: post/reg
+    # avg_goals_against: post/reg
+    # general structure
+    #   'season_id' => {
+    #       :postseason => {
+    #           :win_percent => float
+    #           :total_goals_against => float
+    #       }
+    #    }
+    regular_record = team_regular_season_record(team_id, season_id)
   end
 
   def best_season(team_id)
@@ -354,24 +161,4 @@ module TeamStats
     answer[0]
   end
 
-  def team_season_wins_hash(team_id)
-    percentage_seasons = Hash.new(0)
-    @seasons.teams[team_id].each do |season|
-      season_key = season[0]
-      team_season = season[1].flatten
-      stats = win_lose_draw_regular_season(team_id, team_season)
-      final_percentage = best_worst_win_percentage(stats, team_id)
-      percentage_seasons[season_key] = final_percentage[:win_percentage]
-    end
-
-    percentage_seasons
-  end
-
-  def best_worst_win_percentage(hash, team_id)
-    total_games = (hash[:win] + hash[:loss] + hash[:draw])
-    wins = hash[:win]
-    percentage = ((wins.to_f / total_games) * 100).round(2)
-    hash[:win_percentage] = percentage
-    hash
-  end
 end
