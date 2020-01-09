@@ -92,15 +92,21 @@ class SeasonStatsTest < Minitest::Test
   end
 
   def test_total_season_games_team_id
-    skip
-    # assert_instance_of Hash, @stat_tracker.total_season_games_team_id("20132014")
-    assert_equal 3, @stat_tracker.total_season_games_team_id("20132014")
+    stat_tracker = mock("StatTracker")
+    stat_tracker.stubs(:total_season_games_team_id).returns(13)
+    assert_equal 13, stat_tracker.total_season_games_team_id("20132014")
   end
 
   def test_team_season_record
-    skip
-    assert_instance_of Hash, @stat_tracker.team_season_record("20132014")
-    assert_equal 3, @stat_tracker.team_season_record("20132014")
+    stat_tracker = mock("StatTracker")
+    stat_tracker.stubs(:team_season_record).returns(16)
+    assert_equal 16, stat_tracker.team_season_record("20132014")
+  end
+
+  def test_team_season_win_percentage
+    stat_tracker = mock("StatTracker")
+    stat_tracker.stubs(:team_season_win_percentage).returns(Hash)
+    assert_equal Hash, stat_tracker.team_season_win_percentage(hash, "3")
   end
 
   def test_win_lose_draw
@@ -116,8 +122,19 @@ class SeasonStatsTest < Minitest::Test
     assert_equal 30, @stat_tracker.team_postseason_record("20132014").size
   end
 
-  def test_win_lose_draw_postseason
-    
-    assert_instance_of Hash, @stat_tracker.win_lose_draw_postseason(4, "3")
+  def test_win_lose_draw_post_season
+    game = mock("Game")
+    game.stubs(:klass).returns("Game")
+    stat_tracker = mock("StatTracker")
+    stat_tracker.stubs(:win_lose_draw_postseason).returns([game, game, game])
+    assert_instance_of Array, stat_tracker.win_lose_draw_postseason("4", game)
+  end
+
+  def test_win_lose_draw_regular_season
+    game = mock("Game")
+    game.stubs(:klass).returns("Game")
+    stat_tracker = mock("StatTracker")
+    stat_tracker.stubs(:win_lose_draw_regularseason).returns([game, game, game])
+    assert_instance_of Array, stat_tracker.win_lose_draw_regularseason("4", game)
   end
 end
